@@ -1,0 +1,29 @@
+package com.brunofragadev.autenticacao.service;
+
+
+
+import com.brunofragadev.autenticacao.dto.CredenciaisDTO;
+import com.brunofragadev.autenticacao.dto.UsuarioLoginResponseDTO;
+import com.brunofragadev.configs.jwt.JwtProvider;
+import com.brunofragadev.usuarios.UsuarioDTO;
+import com.brunofragadev.usuarios.UsuarioServico;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthenticationService {
+    private final JwtProvider jwtProvider;
+    private final UsuarioServico usuarioServico;
+
+
+    public AuthenticationService( JwtProvider jwtProvider, UsuarioServico usuarioServico){
+        this.jwtProvider = jwtProvider;
+        this.usuarioServico = usuarioServico;
+    }
+
+    public UsuarioLoginResponseDTO loginCliente(CredenciaisDTO credentials) {
+        UsuarioDTO usuario = usuarioServico.autenticarUsuario(credentials.cpf(), credentials.senha());
+        String token = jwtProvider.generateToken(usuario.userName(),usuario.role());
+        return new UsuarioLoginResponseDTO(token, usuario);
+    }
+
+}

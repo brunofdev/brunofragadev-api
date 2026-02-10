@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  # Serviço do Banco de Dados
+  db:
+    image: postgres:15-alpine
+    container_name: postgres-webportifolio
+    environment:
+      POSTGRES_DB: webportifolio_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin_password
+    ports:
+      - "5432:5432" # Permite acessar o banco pelo DBeaver/PgAdmin no seu PC
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d webportifolio_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Serviço da API Spring Boot
+  api:
+    build: .
+    container_name: api-website
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Sobrescreve as configurações do application.properties
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/webportifolio_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update # Cria as tabelas automaticamente
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+
+volumes:
+  postgres-data:
