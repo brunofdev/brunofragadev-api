@@ -42,9 +42,7 @@ public class SecurityConfigurations {
     //ROTAS PROTEGIDAS
     private static final Map<String, Role> PROTECTED_ROUTES = Map.of(
             //Apenas USER+
-                 "/pedido/criar-pedido", Role.USER
-            ,"/pedido/obter-todos-pedidos", Role.USER
-            ,"/pedido/obter-pedidos-do-cliente", Role.USER
+                 "/feedback/criar", Role.USER
             //Apenas ADMIN1+
             ,"/produtos/adicionar-produto", Role.ADMIN1
             ,"/pedido/*/status", Role.ADMIN1
