@@ -16,6 +16,7 @@ public class FeedbackServico {
 
     public FeedbackDTO criarFeedback(CriarFeedbackDTO dto, Usuario usuario){
         Feedback feedback = feedbackMapeador.mapearFeedbackCriacao(dto, usuario);
+        feedbackRepositorio.save(feedback);
         return feedbackMapeador.mapearFeedbackDTO(feedback);
     }
     public List<FeedbackDTO> listarFeedbacks (){

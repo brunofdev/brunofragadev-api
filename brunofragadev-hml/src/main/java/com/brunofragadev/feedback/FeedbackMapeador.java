@@ -1,10 +1,12 @@
 package com.brunofragadev.feedback;
 
 import com.brunofragadev.usuarios.Usuario;
+import org.springframework.stereotype.Component;
 
 
 import java.util.List;
 
+@Component
 public class FeedbackMapeador {
 
     public  Feedback mapearFeedbackCriacao(CriarFeedbackDTO dto, Usuario usuario){
@@ -16,6 +18,7 @@ public class FeedbackMapeador {
     }
     public FeedbackDTO mapearFeedbackDTO(Feedback feedback){
         return new FeedbackDTO(
+                feedback.getId(),
                 feedback.getUsuario().getUsername(),
                 feedback.getDescricao(),
                 feedback.getAvaliacao(),

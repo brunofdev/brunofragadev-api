@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/feedback")
@@ -30,5 +32,9 @@ public class FeedbackController {
                    .status(HttpStatus.CREATED)
                    .body(ApiResponse.success("Feedback enviado com sucesso!", feedbackCriado));
 
+       }
+       @GetMapping("/listar-todos")
+        public ResponseEntity<ApiResponse<List<FeedbackDTO>>> listarTodosFeedbacks(){
+           return ResponseEntity.ok(ApiResponse.success("Recursos encontrados", feedbackServico.listarFeedbacks()));
        }
 }
