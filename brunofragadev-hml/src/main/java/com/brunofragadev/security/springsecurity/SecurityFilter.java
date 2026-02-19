@@ -1,7 +1,7 @@
 package com.brunofragadev.security.springsecurity;
 
 
-import com.brunofragadev.configs.jwt.JwtProvider;
+import com.brunofragadev.configs.JwtProvider;
 import com.brunofragadev.autenticacao.service.AuthorizationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

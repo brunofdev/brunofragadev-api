@@ -1,4 +1,4 @@
-package com.brunofragadev.configs.jwt;
+package com.brunofragadev.configs;
 
 
 import com.brunofragadev.usuarios.Role;
