@@ -12,8 +12,6 @@ public class UsuarioMapeador {
         cliente.setSenha(dto.senha());
         cliente.setEmail(dto.email());
         cliente.setUserName(dto.userName());
-        cliente.setRole(Role.USER);
-        cliente.setContaAtiva(true);
         return cliente;
     }
     public UsuarioDTO mapearUsuarioParaUsuarioDTO(Usuario novoCliente) {
