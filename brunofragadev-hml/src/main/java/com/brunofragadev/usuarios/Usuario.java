@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,6 +36,28 @@ public class Usuario implements UserDetails {
     private Role role;
     @Column(name = "conta_ativa", nullable = false)
     private boolean contaAtiva;
+    @Column(name = "codigo_verificacao", nullable = false)
+    private String codigoVerificacao;
+    @Column(name = "expiracao_codigo")
+    private LocalDateTime expiracaoCodigo;
+    @Column(name = "telefone")
+    private String telefone;
+    @Column(name = "profissao")
+    private String profissao;
+    @Column(name = "pais")
+    private String pais;
+    @Column(name = "cidade")
+    String cidade;
+    @Column(name = "fotoperfil")
+    String fotoperfil;
+    @Column(name = "github")
+    String github;
+    @Column(name = "linkedin")
+    String linkedin;
+    @Column(name = "bio")
+    String bio;
+
+
 
     public Role getRole(){
         return (this.role == null) ? Role.USER : this.role;

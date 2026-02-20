@@ -21,7 +21,9 @@ public class UsuarioMapeador {
                 novoCliente.getId(),
                 novoCliente.getNome(),
                 novoCliente.getUsername(),
-                novoCliente.getRole()
+                novoCliente.getEmail(),
+                novoCliente.getRole(),
+                novoCliente.isContaAtiva()
         );
     }
     public List<UsuarioDTO> mapearListaUsuarioParaUsuarioDTO(List<Usuario> usuarios){

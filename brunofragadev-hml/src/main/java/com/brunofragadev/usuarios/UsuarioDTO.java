@@ -4,6 +4,8 @@ public record UsuarioDTO(
         Long id,
         String nome,
         String userName,
-        Role role
+        String email,
+        Role role,
+        Boolean contaAtiva
 ){
 }
