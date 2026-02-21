@@ -56,6 +56,7 @@ public class GlobalExceptionHandler {
     // Exceções de Regra de Negócio/Validação - Status 400
     @ExceptionHandler({
             InvalidCredentialsException.class,
+            VerificationCodeInvalidException.class
 
     })
     public ResponseEntity<Map<String, Object>> handleBadRequestExceptions(RuntimeException ex) {

@@ -34,5 +34,16 @@ public class UsuarioController {
     public ResponseEntity<ApiResponse<List<UsuarioDTO>>> listarUsuarios(){
         return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", usuarioServico.listarUsuarios()));
     }
+    @PostMapping("/ativar-conta")
+    public ResponseEntity<ApiResponse<UsuarioDTO>> ativarConta(@RequestBody @Valid AutenticarUsuarioDTO dto) {
+        UsuarioDTO usuarioAtivado = usuarioServico.autenticarContaAtiva(dto);
+        return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", usuarioAtivado));
+    }
+
+    @PostMapping("/reenviar-codigo")
+    public ResponseEntity<Void> reenviarCodigo(@RequestBody String userName) {
+        usuarioServico.gerarNovoCodigo(userName);
+        return ResponseEntity.noContent().build();
+    }
 }
 
