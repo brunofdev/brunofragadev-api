@@ -5,8 +5,8 @@ package com.brunofragadev.autenticacao.service;
 import com.brunofragadev.autenticacao.dto.CredenciaisDTO;
 import com.brunofragadev.autenticacao.dto.UsuarioLoginResponseDTO;
 import com.brunofragadev.configs.JwtProvider;
-import com.brunofragadev.usuarios.UsuarioDTO;
-import com.brunofragadev.usuarios.UsuarioServico;
+import com.brunofragadev.usuarios.dto.UsuarioDTO;
+import com.brunofragadev.usuarios.service.UsuarioServico;
 import org.springframework.stereotype.Service;
 
 @Service

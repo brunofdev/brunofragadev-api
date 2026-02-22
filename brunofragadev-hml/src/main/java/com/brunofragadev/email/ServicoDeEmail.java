@@ -1,7 +1,7 @@
 package com.brunofragadev.email;
 
 import com.brunofragadev.feedback.FeedbackDTO;
-import com.brunofragadev.usuarios.UsuarioDTO;
+import com.brunofragadev.usuarios.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;

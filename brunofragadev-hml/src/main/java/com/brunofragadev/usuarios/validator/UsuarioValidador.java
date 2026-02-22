@@ -1,7 +1,9 @@
-package com.brunofragadev.usuarios;
+package com.brunofragadev.usuarios.validator;
 
+import com.brunofragadev.usuarios.dto.CadastrarUsuarioDTO;
 import com.brunofragadev.usuarios.exceptions.EmailAlreadyExistsException;
 import com.brunofragadev.usuarios.exceptions.UsernameAlreadyExistsException;
+import com.brunofragadev.usuarios.repository.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

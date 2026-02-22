@@ -1,6 +1,6 @@
 package com.brunofragadev.security.springsecurity;
 
-import com.brunofragadev.usuarios.Role;
+import com.brunofragadev.usuarios.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

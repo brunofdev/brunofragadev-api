@@ -1,4 +1,4 @@
-package com.brunofragadev.usuarios;
+package com.brunofragadev.usuarios.entity;
 
 public enum Role {
     USER,

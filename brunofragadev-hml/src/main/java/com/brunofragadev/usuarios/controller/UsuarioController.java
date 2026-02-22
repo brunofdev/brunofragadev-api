@@ -1,5 +1,7 @@
-package com.brunofragadev.usuarios;
+package com.brunofragadev.usuarios.controller;
 
+import com.brunofragadev.usuarios.dto.*;
+import com.brunofragadev.usuarios.service.UsuarioServico;
 import com.brunofragadev.utils.retorno_padrao_api.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

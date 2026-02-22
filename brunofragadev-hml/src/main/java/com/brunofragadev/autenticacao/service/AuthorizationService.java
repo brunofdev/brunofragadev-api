@@ -1,6 +1,6 @@
 package com.brunofragadev.autenticacao.service;
 
-import com.brunofragadev.usuarios.UsuarioRepositorio;
+import com.brunofragadev.usuarios.repository.UsuarioRepositorio;
 
 import com.brunofragadev.usuarios.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

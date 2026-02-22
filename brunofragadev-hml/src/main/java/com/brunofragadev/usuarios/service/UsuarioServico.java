@@ -1,7 +1,13 @@
-package com.brunofragadev.usuarios;
+package com.brunofragadev.usuarios.service;
 
 import com.brunofragadev.email.ServicoDeEmail;
+import com.brunofragadev.usuarios.validator.UsuarioValidador;
+import com.brunofragadev.usuarios.dto.*;
+import com.brunofragadev.usuarios.entity.Role;
+import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.exceptions.*;
+import com.brunofragadev.usuarios.mapper.UsuarioMapeador;
+import com.brunofragadev.usuarios.repository.UsuarioRepositorio;
 import com.brunofragadev.utils.retorno_padrao_api.FormatadoresUteis;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;

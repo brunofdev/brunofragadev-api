@@ -1,7 +1,7 @@
 package com.brunofragadev.feedback;
 
 
-import com.brunofragadev.usuarios.Usuario;
+import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.utils.retorno_padrao_api.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;

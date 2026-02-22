@@ -1,5 +1,8 @@
-package com.brunofragadev.usuarios;
+package com.brunofragadev.usuarios.mapper;
 
+import com.brunofragadev.usuarios.entity.Usuario;
+import com.brunofragadev.usuarios.dto.CadastrarUsuarioDTO;
+import com.brunofragadev.usuarios.dto.UsuarioDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,7 +24,15 @@ public class UsuarioMapeador {
                 novoUsuario.getUsername(),
                 novoUsuario.getEmail(),
                 novoUsuario.getRole(),
-                novoUsuario.isContaAtiva()
+                novoUsuario.isContaAtiva(),
+                novoUsuario.getCidade(),
+                novoUsuario.getGithub(),
+                novoUsuario.getProfissao(),
+                novoUsuario.getBio(),
+                novoUsuario.getFotoperfil(),
+                novoUsuario.getLinkedin(),
+                novoUsuario.getPais(),
+                novoUsuario.getTelefone()
         );
     }
     public List<UsuarioDTO> mapearListaUsuarioParaUsuarioDTO(List<Usuario> usuarios){

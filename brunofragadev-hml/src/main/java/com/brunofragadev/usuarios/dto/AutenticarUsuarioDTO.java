@@ -1,4 +1,4 @@
-package com.brunofragadev.usuarios;
+package com.brunofragadev.usuarios.dto;
 
 public record AutenticarUsuarioDTO(
         String userName,

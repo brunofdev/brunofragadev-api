@@ -1,6 +1,6 @@
 package com.brunofragadev.feedback;
 
-import com.brunofragadev.usuarios.Usuario;
+import com.brunofragadev.usuarios.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

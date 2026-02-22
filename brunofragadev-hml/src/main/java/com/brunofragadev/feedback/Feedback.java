@@ -1,7 +1,7 @@
 package com.brunofragadev.feedback;
 
 import com.brunofragadev.security.auditoria.Auditable;
-import com.brunofragadev.usuarios.Usuario;
+import com.brunofragadev.usuarios.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.brunofragadev.feedback;
 
-import com.brunofragadev.usuarios.Usuario;
+import com.brunofragadev.usuarios.entity.Usuario;
 import org.springframework.stereotype.Component;
 
 
