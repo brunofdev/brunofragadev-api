@@ -95,12 +95,12 @@ public class UsuarioServico {
     private Usuario buscarPorEmail (String email){
         return usuarioRepositorio.findByEmail(email.toUpperCase()).orElseThrow(() -> new UserDontHaveEmailRegistered("Email não localizado"));
     }
-    private Usuario buscarPorUserNameOuEmail (String userNameOrEmail){
-        return usuarioRepositorio.findByUserNameOrEmail(userNameOrEmail).orElseThrow(() -> new UserDontHaveEmailRegistered("Email ou UserName não encontrado no sistema, por favor verifique as informações"));
+    private Usuario buscarPorUserNameOuEmail (String userName, String email){
+        return usuarioRepositorio.findByUserNameOrEmail(userName, email).orElseThrow(() -> new UserDontHaveEmailRegistered("Email ou UserName não encontrado no sistema, por favor verifique as informações"));
     }
     @Transactional
     public UsuarioRecuperacaoSenhaDTO enviarCodigoRecuperacaoSenhaPorEmail (String userNameOuEmail){
-        Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail);
+        Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail, userNameOuEmail);
         String codigoGerado = String.format("%06d", new Random().nextInt(999999));
         usuario.setCodigoVerificacao(codigoGerado);
         usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
