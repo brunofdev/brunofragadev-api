@@ -1,4 +1,4 @@
-package com.brunofragadev.feedback;
+package com.brunofragadev.feedback.dto;
 
 public record CriarFeedbackDTO(
         String descricao,

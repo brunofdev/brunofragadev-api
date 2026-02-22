@@ -1,4 +1,4 @@
-package com.brunofragadev.feedback;
+package com.brunofragadev.feedback.entity;
 
 import com.brunofragadev.security.auditoria.Auditable;
 import com.brunofragadev.usuarios.entity.Usuario;

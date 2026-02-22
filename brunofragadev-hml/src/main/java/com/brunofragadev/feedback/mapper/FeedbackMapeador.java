@@ -1,5 +1,8 @@
-package com.brunofragadev.feedback;
+package com.brunofragadev.feedback.mapper;
 
+import com.brunofragadev.feedback.entity.Feedback;
+import com.brunofragadev.feedback.dto.CriarFeedbackDTO;
+import com.brunofragadev.feedback.dto.FeedbackDTO;
 import com.brunofragadev.usuarios.entity.Usuario;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +12,7 @@ import java.util.List;
 @Component
 public class FeedbackMapeador {
 
-    public  Feedback mapearFeedbackCriacao(CriarFeedbackDTO dto, Usuario usuario){
+    public Feedback mapearFeedbackCriacao(CriarFeedbackDTO dto, Usuario usuario){
         Feedback feedback = new Feedback();
         feedback.setUsuario(usuario);
         feedback.setDescricao(dto.descricao());
