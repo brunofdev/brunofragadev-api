@@ -36,7 +36,7 @@ public class Usuario implements UserDetails {
     private Role role;
     @Column(name = "conta_ativa", nullable = false)
     private boolean contaAtiva;
-    @Column(name = "codigo_verificacao", nullable = false)
+    @Column(name = "codigo_verificacao")
     private String codigoVerificacao;
     @Column(name = "expiracao_codigo")
     private LocalDateTime expiracaoCodigo;

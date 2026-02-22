@@ -5,10 +5,7 @@ import jakarta.validation.constraints.*;
 
 public record UsuarioAlteracaoSenhaDTO(
 
-        @Schema(description = "Nome de usuário para login", example = "brunodev")
-        @NotBlank(message = "O nome de usuário não pode estar em branco.")
-        @Size(min = 5, max = 20, message = "O nome de usuário deve ter entre 5 e 20 caracteres.")
-        @Pattern(regexp = "\\S+", message = "O nome de usuário não pode conter espaços em branco.")
+
         String userName,
 
         @Schema(description = "Senha forte (min 8 chars, 1 maiúscula, 1 minúscula, 1 número, 1 especial)", example = "NovaSenha@123")

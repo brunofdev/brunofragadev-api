@@ -67,6 +67,7 @@ public class UsuarioServico {
         Usuario usuario = buscarUsuarioPorUserName(dto.userName());
         validarCodigo(usuario, dto.codigo());
         usuario.setContaAtiva(true);
+        usuario.setCodigoVerificacao(null);
         usuarioRepositorio.save(usuario);
         UsuarioDTO usuarioDTO = usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
         servicoDeEmail.enviarEmailDeBoasVindas(usuarioDTO);
@@ -115,9 +116,10 @@ public class UsuarioServico {
     }
     @Transactional
     public void alterarSenhaUsuario (UsuarioAlteracaoSenhaDTO dto){
-        Usuario usuario = buscarUsuarioPorUserName(dto.userName().toUpperCase());
+        Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
         validarCodigo(usuario, dto.codigoVerificado());
         usuario.setSenha(dto.novaSenha());
+        usuario.setCodigoVerificacao(null);
         usuarioRepositorio.save(usuario);
         servicoDeEmail.enviarEmailSenhaAlteradaComSucesso(usuario.getEmail(), usuario.getUsername());
     }
