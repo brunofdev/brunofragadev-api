@@ -45,5 +45,22 @@ public class UsuarioController {
         usuarioServico.gerarNovoCodigo(userName);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/senha/recuperacao")
+    public ResponseEntity<ApiResponse<UsuarioRecuperacaoSenhaDTO>> recuperarSenha(@RequestBody String userNameOuEmail) {
+        UsuarioRecuperacaoSenhaDTO emailDTO = usuarioServico.enviarCodigoRecuperacaoSenhaPorEmail(userNameOuEmail);
+        return ResponseEntity.ok(ApiResponse.success("Email enviado com sucesso", emailDTO));
+    }
+    @PostMapping("/senha/recuperacao/validar-codigo")
+    public ResponseEntity<Void> validarCodigoAlteracaoSenha(@RequestBody AutenticarUsuarioDTO dto){
+        usuarioServico.validarCodigoRecuperacaoSenha(dto);
+        return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/senha/recuperacao/alterar-senha")
+    public ResponseEntity<Void> alterarSenha(@RequestBody @Valid UsuarioAlteracaoSenhaDTO dto) {
+        String senhaCodificada = passwordEncoder.encode(dto.novaSenha());
+        UsuarioAlteracaoSenhaDTO dtoSenhaCodificada = dto.withNovaSenha(senhaCodificada);
+        usuarioServico.alterarSenhaUsuario(dtoSenhaCodificada);
+        return ResponseEntity.noContent().build();
+    }
 }
 

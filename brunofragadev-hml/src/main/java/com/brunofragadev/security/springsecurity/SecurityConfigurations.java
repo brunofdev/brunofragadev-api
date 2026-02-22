@@ -39,7 +39,11 @@ public class SecurityConfigurations {
             "/usuario/obter-todos",
             "/usuario/ativar-conta",
             "/usuario/reenviar-codigo",
-            "/feedback/listar-todos"
+            "/usuario/senha/recuperacao",
+            "/usuario/senha/recuperacao/validar-codigo",
+            "/usuario/senha/recuperacao/alterar-senha",
+            "/feedback/listar-todos",
+
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
     };
     //ROTAS PROTEGIDAS

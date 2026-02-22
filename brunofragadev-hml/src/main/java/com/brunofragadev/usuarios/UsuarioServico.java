@@ -1,9 +1,8 @@
 package com.brunofragadev.usuarios;
 
 import com.brunofragadev.email.ServicoDeEmail;
-import com.brunofragadev.usuarios.exceptions.InvalidCredentialsException;
-import com.brunofragadev.usuarios.exceptions.UserNotFoundException;
-import com.brunofragadev.usuarios.exceptions.VerificationCodeInvalidException;
+import com.brunofragadev.usuarios.exceptions.*;
+import com.brunofragadev.utils.retorno_padrao_api.FormatadoresUteis;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,7 @@ public class UsuarioServico {
         servicoDeEmail.enviarEmailDeVerificacao(novoUsuario.email(), novoUsuario.userName(), usuario.getCodigoVerificacao());
         return novoUsuario;
     }
-    public void validarCodigo (Usuario usuarioParaValidar, String codigo) {
+    private void validarCodigo (Usuario usuarioParaValidar, String codigo) {
         if (!usuarioParaValidar.getCodigoVerificacao().equals(codigo)) {
             throw new VerificationCodeInvalidException("Codigo invalido");
         }
@@ -92,6 +91,35 @@ public class UsuarioServico {
             throw new InvalidCredentialsException("Credenciais inválidas");
         }
         return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
+    }
+    private Usuario buscarPorEmail (String email){
+        return usuarioRepositorio.findByEmail(email.toUpperCase()).orElseThrow(() -> new UserDontHaveEmailRegistered("Email não localizado"));
+    }
+    private Usuario buscarPorUserNameOuEmail (String userNameOrEmail){
+        return usuarioRepositorio.findByUserNameOrEmail(userNameOrEmail).orElseThrow(() -> new UserDontHaveEmailRegistered("Email ou UserName não encontrado no sistema, por favor verifique as informações"));
+    }
+    @Transactional
+    public UsuarioRecuperacaoSenhaDTO enviarCodigoRecuperacaoSenhaPorEmail (String userNameOuEmail){
+        Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail);
+        String codigoGerado = String.format("%06d", new Random().nextInt(999999));
+        usuario.setCodigoVerificacao(codigoGerado);
+        usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
+        usuarioRepositorio.save(usuario);
+        servicoDeEmail.enviarEmailDeRecuperacaoDeSenha(usuario.getEmail(), usuario.getUsername(), codigoGerado);
+        return new UsuarioRecuperacaoSenhaDTO(FormatadoresUteis.ofuscarEmail(usuario.getEmail()));
+    }
+    @Transactional
+    public void validarCodigoRecuperacaoSenha (AutenticarUsuarioDTO dto){
+        Usuario usuario = buscarUsuarioPorUserName(dto.userName().toUpperCase());
+        validarCodigo(usuario, dto.codigo());
+    }
+    @Transactional
+    public void alterarSenhaUsuario (UsuarioAlteracaoSenhaDTO dto){
+        Usuario usuario = buscarUsuarioPorUserName(dto.userName().toUpperCase());
+        validarCodigo(usuario, dto.codigoVerificado());
+        usuario.setSenha(dto.novaSenha());
+        usuarioRepositorio.save(usuario);
+        servicoDeEmail.enviarEmailSenhaAlteradaComSucesso(usuario.getEmail(), usuario.getUsername());
     }
 }
 

@@ -48,6 +48,7 @@ public class GlobalExceptionHandler {
             UserNotFoundException.class,
             UserDontFoundException.class,
             UserDontHaveEmailRegistered.class
+
     })
     public ResponseEntity<Map<String, Object>> handleNotFoundExceptions(RuntimeException ex) {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
