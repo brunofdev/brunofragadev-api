@@ -1,5 +1,8 @@
 package com.brunofragadev.usuarios.controller;
 
+import com.brunofragadev.autenticacao.dto.UsuarioLoginResponseDTO;
+import com.brunofragadev.autenticacao.service.AuthenticationService;
+import com.brunofragadev.configs.JwtProvider;
 import com.brunofragadev.usuarios.dto.*;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.service.UsuarioServico;
@@ -25,6 +28,9 @@ public class UsuarioController {
     private UsuarioServico usuarioServico;
 
     @Autowired
+    private JwtProvider jwtProvider;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/cadastro")
@@ -39,9 +45,10 @@ public class UsuarioController {
         return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", usuarioServico.listarUsuarios()));
     }
     @PostMapping("/ativar-conta")
-    public ResponseEntity<ApiResponse<UsuarioDTO>> ativarConta(@RequestBody @Valid AutenticarUsuarioDTO dto) {
+    public ResponseEntity<ApiResponse<UsuarioLoginResponseDTO>> ativarConta(@RequestBody @Valid AutenticarUsuarioDTO dto) {
         UsuarioDTO usuarioAtivado = usuarioServico.autenticarContaAtiva(dto);
-        return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", usuarioAtivado));
+        String token = jwtProvider.generateToken(usuarioAtivado.userName(), usuarioAtivado.role());
+        return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", new UsuarioLoginResponseDTO(token, usuarioAtivado)));
     }
     @GetMapping("/meus-dados")
     public ResponseEntity<ApiResponse<UsuarioDTO>> getUserDetailsByUsername(@AuthenticationPrincipal Usuario usuarioAutenticado){
