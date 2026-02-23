@@ -8,6 +8,8 @@ public class BrunofragadevApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BrunofragadevApplication.class, args);
+        System.out.println("Servidor inicializado com sucesso!");
 	}
+
 
 }
