@@ -55,6 +55,8 @@ public class ProjetoMapper {
                 img.setUrlImagem(imgDto.urlImagem());
                 img.setOrdemExibicao(imgDto.ordemExibicao());
                 img.setIsCapa(imgDto.isCapa());
+                img.setLegenda(imgDto.legenda());
+
                 return img;
             }).collect(Collectors.toList());
             projeto.setGaleria(imagens);
@@ -79,7 +81,13 @@ public class ProjetoMapper {
         }
 
         List<ImagemProjetoDTO> galeriaDTO = projeto.getGaleria().stream()
-                .map(img -> new ImagemProjetoDTO(img.getId(), img.getUrlImagem(), img.getOrdemExibicao(), img.getIsCapa()))
+                .map(img -> new ImagemProjetoDTO(
+                        img.getId(),
+                        img.getUrlImagem(),
+                        img.getOrdemExibicao(),
+                        img.getIsCapa(),
+                        img.getLegenda()
+                ))
                 .collect(Collectors.toList());
 
         return new ProjetoResponseDTO(

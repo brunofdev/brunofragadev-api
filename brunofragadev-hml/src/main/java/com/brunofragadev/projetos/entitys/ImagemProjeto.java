@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImagemProjeto extends Auditable { // 👈 HERDANDO A SUA AUDITORIA
+public class ImagemProjeto extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +26,14 @@ public class ImagemProjeto extends Auditable { // 👈 HERDANDO A SUA AUDITORIA
     @Column(nullable = false)
     private Integer ordemExibicao;
 
+    @Column(length = 255)
+    private String legenda;
+
     private Boolean isCapa = false;
 
-    // 👇 Relacionamento de volta para o Projeto
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projeto_id", nullable = false)
-    @JsonIgnore // Evita loop infinito na hora de devolver o JSON pro Front-end
+    @JsonIgnore
     private Projeto projeto;
 }

@@ -4,5 +4,6 @@ public record ImagemProjetoDTO(
         Long id,
         String urlImagem,
         Integer ordemExibicao,
-        Boolean isCapa
+        Boolean isCapa,
+        String legenda
 ) {}
