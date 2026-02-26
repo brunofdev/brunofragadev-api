@@ -1,6 +1,6 @@
 package com.brunofragadev.usuarios.validator;
 
-import com.brunofragadev.usuarios.dto.CadastrarUsuarioDTO;
+import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
 import com.brunofragadev.usuarios.exceptions.EmailAlreadyExistsException;
 import com.brunofragadev.usuarios.exceptions.UsernameAlreadyExistsException;
 import com.brunofragadev.usuarios.repository.UsuarioRepositorio;

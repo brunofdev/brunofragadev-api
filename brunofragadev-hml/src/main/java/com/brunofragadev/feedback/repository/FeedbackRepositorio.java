@@ -1,6 +1,6 @@
 package com.brunofragadev.feedback.repository;
 
-import com.brunofragadev.feedback.dto.FeedbackDTO;
+import com.brunofragadev.feedback.dto.saida.FeedbackDTO;
 import com.brunofragadev.feedback.entity.Feedback;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface FeedbackRepositorio extends JpaRepository<Feedback, Long> {
     @Query("""
-        SELECT new com.brunofragadev.feedback.dto.FeedbackDTO(
+        SELECT new com.brunofragadev.feedback.dto.saida.FeedbackDTO(
             f.id,
             u.nomePublico,
             u.userName,
@@ -31,7 +31,7 @@ public interface FeedbackRepositorio extends JpaRepository<Feedback, Long> {
     List<FeedbackDTO> buscarTodosTipoGeralComFotos();
 
     @Query("""
-        SELECT new com.brunofragadev.feedback.dto.FeedbackDTO(
+        SELECT new com.brunofragadev.feedback.dto.saida.FeedbackDTO(
             f.id,
             u.nomePublico,
             u.userName,

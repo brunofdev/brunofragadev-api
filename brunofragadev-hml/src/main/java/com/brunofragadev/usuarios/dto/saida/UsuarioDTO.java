@@ -1,4 +1,4 @@
-package com.brunofragadev.usuarios.dto;
+package com.brunofragadev.usuarios.dto.saida;
 
 import com.brunofragadev.usuarios.entity.Role;
 

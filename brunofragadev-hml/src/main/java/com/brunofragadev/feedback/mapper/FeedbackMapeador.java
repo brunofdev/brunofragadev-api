@@ -1,8 +1,8 @@
 package com.brunofragadev.feedback.mapper;
 
 import com.brunofragadev.feedback.entity.Feedback;
-import com.brunofragadev.feedback.dto.CriarFeedbackDTO;
-import com.brunofragadev.feedback.dto.FeedbackDTO;
+import com.brunofragadev.feedback.dto.entrada.CriarFeedbackDTO;
+import com.brunofragadev.feedback.dto.saida.FeedbackDTO;
 import com.brunofragadev.usuarios.entity.Usuario;
 import org.springframework.stereotype.Component;
 

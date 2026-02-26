@@ -1,9 +1,8 @@
 package com.brunofragadev.feedback.service;
 
-import com.brunofragadev.feedback.excepetions.FeedbackDontFoundException;
 import com.brunofragadev.feedback.repository.FeedbackRepositorio;
-import com.brunofragadev.feedback.dto.CriarFeedbackDTO;
-import com.brunofragadev.feedback.dto.FeedbackDTO;
+import com.brunofragadev.feedback.dto.entrada.CriarFeedbackDTO;
+import com.brunofragadev.feedback.dto.saida.FeedbackDTO;
 import com.brunofragadev.feedback.entity.Feedback;
 import com.brunofragadev.feedback.mapper.FeedbackMapeador;
 import com.brunofragadev.usuarios.entity.Role;

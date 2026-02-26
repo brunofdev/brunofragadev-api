@@ -1,9 +1,13 @@
 package com.brunofragadev.usuarios.controller;
 
 import com.brunofragadev.autenticacao.dto.UsuarioLoginResponseDTO;
-import com.brunofragadev.autenticacao.service.AuthenticationService;
 import com.brunofragadev.configs.JwtProvider;
-import com.brunofragadev.usuarios.dto.*;
+import com.brunofragadev.usuarios.dto.entrada.AtualizarDadosPerfilDTO;
+import com.brunofragadev.usuarios.dto.entrada.AutenticarUsuarioDTO;
+import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
+import com.brunofragadev.usuarios.dto.entrada.UsuarioAlteracaoSenhaDTO;
+import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
+import com.brunofragadev.usuarios.dto.saida.UsuarioRecuperacaoSenhaDTO;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.service.UsuarioServico;
 import com.brunofragadev.utils.retorno_padrao_api.ApiResponse;

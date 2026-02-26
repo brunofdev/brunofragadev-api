@@ -1,4 +1,4 @@
-package com.brunofragadev.usuarios.dto;
+package com.brunofragadev.usuarios.dto.saida;
 
 public record UsuarioRecuperacaoSenhaDTO(String email) {
 }

@@ -1,9 +1,9 @@
 package com.brunofragadev.usuarios.mapper;
 
-import com.brunofragadev.usuarios.dto.AtualizarDadosPerfilDTO;
+import com.brunofragadev.usuarios.dto.entrada.AtualizarDadosPerfilDTO;
 import com.brunofragadev.usuarios.entity.Usuario;
-import com.brunofragadev.usuarios.dto.CadastrarUsuarioDTO;
-import com.brunofragadev.usuarios.dto.UsuarioDTO;
+import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
+import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

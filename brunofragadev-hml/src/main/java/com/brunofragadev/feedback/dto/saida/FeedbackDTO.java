@@ -1,4 +1,4 @@
-package com.brunofragadev.feedback.dto;
+package com.brunofragadev.feedback.dto.saida;
 
 
 import com.brunofragadev.feedback.entity.TipoFeedback;

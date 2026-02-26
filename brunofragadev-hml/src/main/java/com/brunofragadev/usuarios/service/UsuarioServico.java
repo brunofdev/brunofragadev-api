@@ -1,8 +1,13 @@
 package com.brunofragadev.usuarios.service;
 
 import com.brunofragadev.email.ServicoDeEmail;
+import com.brunofragadev.usuarios.dto.entrada.AtualizarDadosPerfilDTO;
+import com.brunofragadev.usuarios.dto.entrada.AutenticarUsuarioDTO;
+import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
+import com.brunofragadev.usuarios.dto.entrada.UsuarioAlteracaoSenhaDTO;
+import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
+import com.brunofragadev.usuarios.dto.saida.UsuarioRecuperacaoSenhaDTO;
 import com.brunofragadev.usuarios.validator.UsuarioValidador;
-import com.brunofragadev.usuarios.dto.*;
 import com.brunofragadev.usuarios.entity.Role;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.exceptions.*;
