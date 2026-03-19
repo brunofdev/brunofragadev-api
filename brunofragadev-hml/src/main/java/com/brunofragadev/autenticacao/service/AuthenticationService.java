@@ -6,7 +6,6 @@ import com.brunofragadev.autenticacao.dto.UsuarioLoginResponseDTO;
 import com.brunofragadev.configs.JwtProvider;
 import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
 import com.brunofragadev.usuarios.service.UsuarioServico;
-import com.brunofragadev.usuarios.mapper.UsuarioMapeador; // Supondo que você use seu mapeador aqui
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class AuthenticationService {
     }
 
     public UsuarioLoginResponseDTO loginCliente(CredenciaisDTO credentials) {
-        UsuarioDTO usuario = usuarioServico.autenticarUsuario(credentials.userName(), credentials.senha());
+        UsuarioDTO usuario = usuarioServico.validarCredenciais(credentials.userName(), credentials.senha());
         String token = jwtProvider.generateToken(usuario.userName(), usuario.role());
         return new UsuarioLoginResponseDTO(token, usuario);
     }

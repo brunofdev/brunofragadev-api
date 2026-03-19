@@ -111,13 +111,7 @@ public class UsuarioServico {
     private Usuario buscarUsuarioPorUserName(String userName){
         return usuarioRepositorio.findByUserName(userName.toUpperCase()).orElseThrow(() -> new UserNotFoundException("nome de Usuario não encontrado"));
     }
-    public UsuarioDTO autenticarUsuario(String userName, String senha) {
-        Usuario usuario = buscarUsuarioPorUserName(userName);
-        if (!codificadorSenha.matches(senha, usuario.getSenha())) {
-            throw new InvalidCredentialsException("Credenciais inválidas");
-        }
-        return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
-    }
+
     private Usuario buscarPorEmail (String email){
         return usuarioRepositorio.findByEmail(email.toUpperCase()).orElseThrow(() -> new UserDontHaveEmailRegistered("Email não localizado"));
     }
@@ -151,6 +145,13 @@ public class UsuarioServico {
         usuario.setCodigoVerificacao(null);
         usuarioRepositorio.save(usuario);
         servicoDeEmail.enviarEmailSenhaAlteradaComSucesso(usuario.getEmail(), usuario.getUsername());
+    }
+    public UsuarioDTO validarCredenciais(String userNameOuEmail, String senha) {
+        Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail.toUpperCase(), userNameOuEmail.toUpperCase());
+        if (!codificadorSenha.matches(senha, usuario.getSenha())) {
+            throw new InvalidCredentialsException("Credenciais inválidas");
+        }
+        return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
     }
     @Transactional
     public UsuarioDTO processarLoginGoogle(String email, String nome, String fotoUrl) {
