@@ -6,11 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Schema(description = "DTO para autenticação de usuário")
-public record AutenticarUsuarioDTO(
-        @Schema(description = "Nome de usuário para login", example = "brunodev")
-        @NotBlank(message = "O nome de usuário não pode estar em branco.")
-        @Size(min = 5, max = 20, message = "O nome de usuário deve ter entre 5 e 20 caracteres.")
-        @Pattern(regexp = "\\S+", message = "O nome de usuário não pode conter espaços em branco.")
+public record ValidarUsuarioDTO(
+        @Schema(description = "Nome de usuário ou email para login", example = "brunodev or bruno@email.com")
+        @NotBlank(message = "O nome de usuário ou email não pode estar em branco.")
         String userName,
 
         @Schema(description = "Código de autenticação", example = "123456")

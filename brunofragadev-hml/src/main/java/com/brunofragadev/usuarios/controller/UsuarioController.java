@@ -3,19 +3,17 @@ package com.brunofragadev.usuarios.controller;
 import com.brunofragadev.autenticacao.dto.UsuarioLoginResponseDTO;
 import com.brunofragadev.configs.JwtProvider;
 import com.brunofragadev.usuarios.dto.entrada.AtualizarDadosPerfilDTO;
-import com.brunofragadev.usuarios.dto.entrada.AutenticarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.entrada.UsuarioAlteracaoSenhaDTO;
+import com.brunofragadev.usuarios.dto.entrada.ValidarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
 import com.brunofragadev.usuarios.dto.saida.UsuarioRecuperacaoSenhaDTO;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.service.UsuarioServico;
 import com.brunofragadev.utils.retorno_padrao_api.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +44,7 @@ public class UsuarioController {
         return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", usuarioServico.listarUsuarios()));
     }
     @PostMapping("/ativar-conta")
-    public ResponseEntity<ApiResponse<UsuarioLoginResponseDTO>> ativarConta(@RequestBody @Valid AutenticarUsuarioDTO dto) {
+    public ResponseEntity<ApiResponse<UsuarioLoginResponseDTO>> ativarConta(@RequestBody @Valid ValidarUsuarioDTO dto) {
         UsuarioDTO usuarioAtivado = usuarioServico.autenticarContaAtiva(dto);
         String token = jwtProvider.generateToken(usuarioAtivado.userName(), usuarioAtivado.role());
         return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", new UsuarioLoginResponseDTO(token, usuarioAtivado)));
@@ -68,7 +66,7 @@ public class UsuarioController {
         return ResponseEntity.ok(ApiResponse.success("Email enviado com sucesso", emailDTO));
     }
     @PostMapping("/senha/recuperacao/validar-codigo")
-    public ResponseEntity<Void> validarCodigoAlteracaoSenha(@RequestBody AutenticarUsuarioDTO dto){
+    public ResponseEntity<Void> validarCodigoAlteracaoSenha(@RequestBody ValidarUsuarioDTO dto){
         usuarioServico.validarCodigoRecuperacaoSenha(dto);
         return ResponseEntity.noContent().build();
     }

@@ -2,9 +2,9 @@ package com.brunofragadev.usuarios.service;
 
 import com.brunofragadev.email.ServicoDeEmail;
 import com.brunofragadev.usuarios.dto.entrada.AtualizarDadosPerfilDTO;
-import com.brunofragadev.usuarios.dto.entrada.AutenticarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.entrada.UsuarioAlteracaoSenhaDTO;
+import com.brunofragadev.usuarios.dto.entrada.ValidarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
 import com.brunofragadev.usuarios.dto.saida.UsuarioRecuperacaoSenhaDTO;
 import com.brunofragadev.usuarios.validator.UsuarioValidador;
@@ -85,8 +85,8 @@ public class UsuarioServico {
     }
 
     @Transactional
-    public UsuarioDTO autenticarContaAtiva(AutenticarUsuarioDTO dto){
-        Usuario usuario = buscarUsuarioPorUserName(dto.userName());
+    public UsuarioDTO autenticarContaAtiva(ValidarUsuarioDTO dto){
+        Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
         validarCodigo(usuario, dto.codigo());
         usuario.setContaAtiva(true);
         usuario.setCodigoVerificacao(null);
@@ -132,7 +132,7 @@ public class UsuarioServico {
         return new UsuarioRecuperacaoSenhaDTO(FormatadoresUteis.ofuscarEmail(usuario.getEmail()));
     }
     @Transactional
-    public void validarCodigoRecuperacaoSenha (AutenticarUsuarioDTO dto){
+    public void validarCodigoRecuperacaoSenha (ValidarUsuarioDTO dto){
         Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
         validarCodigo(usuario, dto.codigo());
     }
@@ -161,6 +161,9 @@ public class UsuarioServico {
             Usuario usuario = usuarioExistente.get();
             if (fotoUrl != null && !fotoUrl.equals(usuario.getFotoperfil())) {
                 usuario.setFotoperfil(fotoUrl);
+            }
+            if(!usuario.isContaAtiva()){
+                usuario.setContaAtiva(true);
             }
             return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
         }

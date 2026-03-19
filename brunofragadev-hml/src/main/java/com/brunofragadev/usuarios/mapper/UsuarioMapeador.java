@@ -17,8 +17,8 @@ public class UsuarioMapeador {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.nome());
         usuario.setSenha(senhaCriptografada);
-        usuario.setEmail(dto.email());
-        usuario.setUserName(dto.userName());
+        usuario.setEmail(dto.email().toUpperCase());
+        usuario.setUserName(dto.userName().toUpperCase());
         usuario.setNomePublico(dto.nomePublico());
         return usuario;
     }
