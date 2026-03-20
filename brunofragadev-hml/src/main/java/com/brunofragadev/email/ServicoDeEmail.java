@@ -84,7 +84,7 @@ public class ServicoDeEmail {
     // =========================================================================
     // 3. ALERTA PARA O ADMIN (Quando alguém envia um feedback)
     // =========================================================================
-    public void enviarAlertaDeNovoFeedbackParaAdmin(FeedbackDTO feedback) {
+    public void enviarAlertaDeNovoFeedbackParaAdmin(FeedbackDTO feedback, String localFeedback) {
         String assunto = "Novo Feedback Recebido no seu Portfólio!";
         String conteudoHtml = String.format("""
                 <html><body>
@@ -95,8 +95,9 @@ public class ServicoDeEmail {
                     <blockquote style="border-left: 2px solid #ccc; padding-left: 10px; margin-left: 5px;">
                         %s
                     </blockquote>
+                    <p><strong>Local de postagem:</strong> %s</p>
                 </body></html>
-                """, feedback.criadoPor(), feedback.notaAvaliacao(), feedback.comentario());
+                """, feedback.criadoPor(), feedback.notaAvaliacao(), feedback.comentario(), localFeedback);
 
         // Envia sempre para o e-mail do dono do portfólio
         enviarEmailPelaApi("brunofragaa97@gmail.com", "Bruno Fraga (Admin)", assunto, conteudoHtml);

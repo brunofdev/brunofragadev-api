@@ -1,10 +1,13 @@
 package com.brunofragadev.feedback.service;
 
+import com.brunofragadev.email.ServicoDeEmail;
 import com.brunofragadev.feedback.repository.FeedbackRepositorio;
 import com.brunofragadev.feedback.dto.entrada.CriarFeedbackDTO;
 import com.brunofragadev.feedback.dto.saida.FeedbackDTO;
 import com.brunofragadev.feedback.entity.Feedback;
 import com.brunofragadev.feedback.mapper.FeedbackMapeador;
+import com.brunofragadev.projetos.entitys.Projeto;
+import com.brunofragadev.shared.service.ResolvedorDeReferencia;
 import com.brunofragadev.usuarios.entity.Role;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.exceptions.InvalidCredentialsException;
@@ -16,16 +19,26 @@ import java.util.List;
 @Service
 public class FeedbackServico {
 
-    @Autowired
-    private FeedbackRepositorio feedbackRepositorio;
 
-    @Autowired
-    private FeedbackMapeador feedbackMapeador;
+    private final FeedbackRepositorio feedbackRepositorio;
+    private final FeedbackMapeador feedbackMapeador;
+    private final ServicoDeEmail servicoDeEmail;
+    private final ResolvedorDeReferencia resolvedorDeReferencia;
+
+    public FeedbackServico (FeedbackRepositorio feedbackRepositorio, FeedbackMapeador feedbackMapeador, ServicoDeEmail servicoDeEmail, ResolvedorDeReferencia resolvedorDeReferencia){
+        this.feedbackRepositorio = feedbackRepositorio;
+        this.feedbackMapeador = feedbackMapeador;
+        this.servicoDeEmail = servicoDeEmail;
+        this.resolvedorDeReferencia = resolvedorDeReferencia;
+    }
 
     public FeedbackDTO criarFeedback(CriarFeedbackDTO dto, Usuario usuario){
         Feedback feedback = feedbackMapeador.mapearFeedbackCriacao(dto, usuario);
         feedbackRepositorio.save(feedback);
-        return feedbackMapeador.mapearFeedbackDTO(feedback);
+        FeedbackDTO feedbackDTO = feedbackMapeador.mapearFeedbackDTO(feedback);
+        String localFeedback = resolvedorDeReferencia.resolverNome(feedbackDTO.tipoFeedback(), feedbackDTO.referenciaId());
+        servicoDeEmail.enviarAlertaDeNovoFeedbackParaAdmin(feedbackDTO, localFeedback);
+        return feedbackDTO;
     }
 
     public List<FeedbackDTO> listarFeedbacksTipoGeral (){
