@@ -1,5 +1,7 @@
 package com.brunofragadev.usuarios.entity;
 
+import com.brunofragadev.usuarios.exceptions.VerificationCodeInvalidException;
+import com.brunofragadev.utils.utilitarios.CodigoVerificacao;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,10 +36,6 @@ public class Usuario implements UserDetails {
     private Role role;
     @Column(name = "conta_ativa", nullable = false)
     private boolean contaAtiva;
-    @Column(name = "codigo_verificacao")
-    private String codigoVerificacao;
-    @Column(name = "expiracao_codigo")
-    private LocalDateTime expiracaoCodigo;
     @Column(name = "telefone")
     private String telefone;
     @Column(name = "profissao")
@@ -56,6 +54,8 @@ public class Usuario implements UserDetails {
     private String bio;
     @Column(name = "usuario_anonimo" , nullable = true)
     private Boolean isAnonimo;
+    @Embedded
+    private CodigoVerificacao codigoVerificacao;
 
     public static Usuario criar(String nome, String userName,
                                 String email, String senhaCriptografada,
@@ -87,16 +87,21 @@ public class Usuario implements UserDetails {
     public void ativarConta(){
         this.contaAtiva = true;
         this.codigoVerificacao = null;
-        this.expiracaoCodigo = null;
     }
     public void definirCodigoVerificacao(String codigo, LocalDateTime expiracao) {
-        this.codigoVerificacao = codigo;
-        this.expiracaoCodigo = expiracao;
+        this.codigoVerificacao = new CodigoVerificacao(codigo, expiracao);
     }
     public void alterarSenha(String senhaCriptografada) {
         this.senha = senhaCriptografada;
         this.codigoVerificacao = null;
-        this.expiracaoCodigo = null;
+    }
+    public void validarCodigo(String tentativa) {
+        if (this.codigoVerificacao == null)
+            throw new VerificationCodeInvalidException("Nenhum código ativo");
+        if (this.codigoVerificacao.estaExpirado())
+            throw new VerificationCodeInvalidException("Código expirado");
+        if (!this.codigoVerificacao.corresponde(tentativa))
+            throw new VerificationCodeInvalidException("Código inválido");
     }
     public void definirRole(Role role) {
         this.role = (role == null) ? Role.USER : role;

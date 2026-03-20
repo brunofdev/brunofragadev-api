@@ -52,17 +52,10 @@ public class UsuarioServico {
         usuario.definirCodigoVerificacao(codigoGerado, LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
         UsuarioDTO novoUsuario = usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
-        servicoDeEmail.enviarEmailDeVerificacao(novoUsuario.email(), novoUsuario.userName(), usuario.getCodigoVerificacao());
+        servicoDeEmail.enviarEmailDeVerificacao(novoUsuario.email(), novoUsuario.userName(), codigoGerado);
         return novoUsuario;
     }
-    private void validarCodigo (Usuario usuarioParaValidar, String codigo) {
-        if (!usuarioParaValidar.getCodigoVerificacao().equals(codigo)) {
-            throw new VerificationCodeInvalidException("Codigo invalido");
-        }
-        if (usuarioParaValidar.getExpiracaoCodigo().isBefore(LocalDateTime.now())) {
-            throw new VerificationCodeInvalidException("O código de verificação expirou.");
-        }
-    }
+
     @Transactional
     public UsuarioDTO atualizarDadosPerfil(String userName, AtualizarDadosPerfilDTO dadosAtualizados){
         Usuario usuario = buscarUsuarioPorUserName(userName.toUpperCase());
@@ -77,13 +70,13 @@ public class UsuarioServico {
         String codigoGerado = gerarCodigoVerificacao();
         usuario.definirCodigoVerificacao(codigoGerado, LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
-        servicoDeEmail.enviarEmailDeVerificacao(usuario.getEmail(), usuario.getUsername(), usuario.getCodigoVerificacao());
+        servicoDeEmail.enviarEmailDeVerificacao(usuario.getEmail(), usuario.getUsername(), codigoGerado);
     }
 
     @Transactional
     public UsuarioDTO autenticarContaAtiva(ValidarUsuarioDTO dto){
         Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
-        validarCodigo(usuario, dto.codigo());
+        usuario.validarCodigo(dto.codigo());
         usuario.ativarConta();
         usuarioRepositorio.save(usuario);
         UsuarioDTO usuarioDTO = usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
@@ -106,7 +99,6 @@ public class UsuarioServico {
     private Usuario buscarUsuarioPorUserName(String userName){
         return usuarioRepositorio.findByUserName(userName.toUpperCase()).orElseThrow(() -> new UserNotFoundException("nome de Usuario não encontrado"));
     }
-
     private Usuario buscarPorEmail (String email){
         return usuarioRepositorio.findByEmail(email.toUpperCase()).orElseThrow(() -> new UserDontHaveEmailRegistered("Email não localizado"));
     }
@@ -128,12 +120,12 @@ public class UsuarioServico {
     @Transactional
     public void validarCodigoRecuperacaoSenha (ValidarUsuarioDTO dto){
         Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
-        validarCodigo(usuario, dto.codigo());
+        usuario.validarCodigo(dto.codigo());
     }
     @Transactional
     public void alterarSenhaUsuario (UsuarioAlteracaoSenhaDTO dto){
         Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
-        validarCodigo(usuario, dto.codigoVerificado());
+        usuario.validarCodigo(dto.codigoVerificado());
         String senhaNovaCriptografada = codificadorSenha.encode(dto.novaSenha());
         usuario.alterarSenha(senhaNovaCriptografada);
         usuarioRepositorio.save(usuario);
