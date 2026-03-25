@@ -9,6 +9,7 @@ import com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO;
 import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.infrastructure.default_return_api.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,7 +40,7 @@ public class ProjectFeedbackController {
 
     @PostMapping("/criar")
     public ResponseEntity<ApiResponse<FeedbackDTO>> createProjectFeedback(
-            @RequestBody FeedbackCreateRequest request,
+            @Valid @RequestBody FeedbackCreateRequest request,
             @AuthenticationPrincipal User user) {
         FeedbackDTO createdFeedback = createFeedbackUseCase.execute(request, user);
         return ResponseEntity
@@ -56,7 +57,7 @@ public class ProjectFeedbackController {
     @PutMapping("/atualizar/{idFeedback}")
     public ResponseEntity<ApiResponse<FeedbackDTO>> updateProjectFeedback(
             @PathVariable Long idFeedback,
-            @RequestBody FeedbackCreateRequest request,
+            @Valid @RequestBody FeedbackCreateRequest request,
             @AuthenticationPrincipal User user) {
         FeedbackDTO updatedFeedback = updateFeedbackUseCase.execute(idFeedback, request, user);
         return ResponseEntity.ok(ApiResponse.success("Feedback do projeto atualizado com sucesso!", updatedFeedback));

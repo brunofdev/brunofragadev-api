@@ -2,8 +2,10 @@ package com.brunofragadev.module.feedback.infrastructure.persistence;
 
 import com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO;
 import com.brunofragadev.module.feedback.domain.entity.Feedback;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -50,4 +52,8 @@ public interface SpringDataFeedbackRepository extends JpaRepository<Feedback, Lo
         ORDER BY f.dataCriacao DESC
     """)
     List<FeedbackDTO> findProjectFeedbacksWithPhotos(@Param("projetoId") Long projetoId);
+    List<Feedback> findAllByReferenciaId(Long referenciaId);
+    @Modifying
+    @Query("DELETE FROM Feedback f WHERE f.referenciaId = :referenciaId")
+    void deleteAllByReferenciaId(@Param("referenciaId") Long referenciaId);
 }

@@ -1,5 +1,6 @@
 package com.brunofragadev.module.project.application.usecase;
 
+import com.brunofragadev.module.feedback.application.usecase.RemoveAllProjectFeedbacksUseCase;
 import com.brunofragadev.module.project.domain.repository.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteProjectUseCase {
 
     private final ProjectRepository projectRepository;
+    private final RemoveAllProjectFeedbacksUseCase removeAllProjectFeedbacksUseCase;
 
-    public DeleteProjectUseCase(ProjectRepository projectRepository) {
+    public DeleteProjectUseCase(ProjectRepository projectRepository, RemoveAllProjectFeedbacksUseCase removeAllProjectFeedbacksUseCase) {
         this.projectRepository = projectRepository;
+        this.removeAllProjectFeedbacksUseCase = removeAllProjectFeedbacksUseCase;
     }
 
     @Transactional
@@ -20,5 +23,6 @@ public class DeleteProjectUseCase {
             throw new EntityNotFoundException("Project not found with ID: " + id);
         }
         projectRepository.deleteById(id);
+        removeAllProjectFeedbacksUseCase.execute(id);
     }
 }

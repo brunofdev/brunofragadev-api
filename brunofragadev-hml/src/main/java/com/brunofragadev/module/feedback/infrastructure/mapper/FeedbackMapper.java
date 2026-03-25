@@ -16,7 +16,7 @@ public class FeedbackMapper {
                 user,
                 request.descricao(),
                 request.avaliacao(),
-                request.feedbackType(),
+                request.tipoFeedback(),
                 request.referenciaId()
         );
     }

@@ -11,6 +11,8 @@ public interface FeedbackRepository {
     Optional<Feedback> findById(Long id);
     void delete(Feedback feedback);
 
+    List<Feedback> findAllFeedbackByProjectReferenceId(Long referenceId);
+    void  deleteAllByReferenceId(Long referenceId) ;
     List<FeedbackDTO> findGeneralFeedbacksWithPhotos();
     List<FeedbackDTO> findProjectFeedbacksWithPhotos(Long projectId);
 }

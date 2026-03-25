@@ -41,7 +41,7 @@ public class Feedback extends Auditable {
         f.descricao = descricao;
         f.avaliacao = avaliacao;
         f.feedbackType = (feedbackType == null) ? FeedbackType.GERAL : feedbackType;
-        f.referenciaId = referenciaId;
+        f.referenciaId = (referenciaId == null) ? 0 : referenciaId;
         return f;
     }
 

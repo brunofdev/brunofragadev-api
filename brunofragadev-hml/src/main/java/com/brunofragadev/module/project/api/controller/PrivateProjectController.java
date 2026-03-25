@@ -4,6 +4,7 @@ import com.brunofragadev.module.project.api.dto.request.ProjectRequest;
 import com.brunofragadev.module.project.api.dto.response.ProjectResponse;
 import com.brunofragadev.module.project.application.usecase.*;
 import com.brunofragadev.infrastructure.default_return_api.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/paineladm/projetos")
 @Validated
+@Tag(name = "1. Gerenciamento de Projetos", description = "Endpoints restritos para criação e edição de projetos (Exige Token)")
 public class PrivateProjectController {
 
     private final CreateProjectUseCase createProjectUseCase;

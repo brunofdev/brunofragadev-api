@@ -41,4 +41,14 @@ public class FeedbackRepositoryAdapter implements FeedbackRepository {
     public List<FeedbackDTO> findProjectFeedbacksWithPhotos(Long projectId) {
         return springRepository.findProjectFeedbacksWithPhotos(projectId);
     }
+
+    @Override
+    public List<Feedback> findAllFeedbackByProjectReferenceId(Long referenceId){
+        return springRepository.findAllByReferenciaId(referenceId);
+    }
+    @Override
+    public void  deleteAllByReferenceId (Long referenciaId){
+        springRepository.deleteAllByReferenciaId(referenciaId);
+    }
+
 }
