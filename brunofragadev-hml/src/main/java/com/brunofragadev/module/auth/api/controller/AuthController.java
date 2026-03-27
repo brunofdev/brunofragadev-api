@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/login/google")
-    @Operation(summary = "Realizar login com Google", description = "Valida o token do Google OAuth2 e autentica o usuário no sistema.")
+    @Operation(summary = "Realizar login com Google", description = "Valida o token do Google OAuth2 e autentica o user no sistema.")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Login social realizado com sucesso")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Token do Google ausente ou inválido")
     public ResponseEntity<ApiResponse<UserLoginResponse>> loginWithGoogle(@Valid @RequestBody GoogleAuthRequest googleAuthRequest) {
