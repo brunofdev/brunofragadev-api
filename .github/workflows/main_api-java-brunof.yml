@@ -25,14 +25,13 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
-        working-directory: brunofragadev-hml
         run: mvn clean install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: brunofragadev-hml/target/*.jar
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,9 +49,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B6BB2CCE2B024DADAD4B3E2081AE5A0E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_344685AEA0794FC6BC1274B43A569A3C }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E74B59569C4443E2AA8C6094F25FCC29 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_1D28661DE9A042488C911367990A3DB1 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1889ACC4002340EF83744F9346341032 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6B1817DD7FC648B1A5649ACFC3316955 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -61,6 +60,4 @@ jobs:
           app-name: 'api-java-brunof'
           slot-name: 'Production'
           package: '*.jar'
-
           
-
