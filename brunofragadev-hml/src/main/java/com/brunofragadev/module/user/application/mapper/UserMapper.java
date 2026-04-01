@@ -1,4 +1,4 @@
-package com.brunofragadev.module.user.infrastructure.mapper;
+package com.brunofragadev.module.user.application.mapper;
 
 import com.brunofragadev.module.user.api.dto.request.UpdateProfileData;
 import com.brunofragadev.module.user.api.dto.request.UserRegistrationRequest;

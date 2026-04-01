@@ -5,7 +5,7 @@ import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.module.user.domain.exception.UserNotFoundException;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
-import com.brunofragadev.module.user.infrastructure.mapper.UserMapper;
+import com.brunofragadev.module.user.application.mapper.UserMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

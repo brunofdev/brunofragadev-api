@@ -1,4 +1,4 @@
-package com.brunofragadev.module.feedback.infrastructure.mapper;
+package com.brunofragadev.module.feedback.application.mapper;
 
 import com.brunofragadev.module.feedback.domain.entity.Feedback;
 import com.brunofragadev.module.feedback.api.dto.request.FeedbackCreateRequest;

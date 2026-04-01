@@ -2,7 +2,7 @@ package com.brunofragadev.module.user.application.usecase;
 
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
-import com.brunofragadev.module.user.infrastructure.mapper.UserMapper;
+import com.brunofragadev.module.user.application.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

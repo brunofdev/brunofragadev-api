@@ -5,7 +5,7 @@ import com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO;
 import com.brunofragadev.module.feedback.domain.entity.Feedback;
 import com.brunofragadev.module.feedback.domain.exception.FeedbackNotFoundException;
 import com.brunofragadev.module.feedback.domain.repository.FeedbackRepository;
-import com.brunofragadev.module.feedback.infrastructure.mapper.FeedbackMapper;
+import com.brunofragadev.module.feedback.application.mapper.FeedbackMapper;
 import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.module.user.domain.exception.InvalidCredentialsException;
 import org.springframework.stereotype.Service;

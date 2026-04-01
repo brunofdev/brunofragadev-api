@@ -52,6 +52,26 @@ public interface SpringDataFeedbackRepository extends JpaRepository<Feedback, Lo
         ORDER BY f.dataCriacao DESC
     """)
     List<FeedbackDTO> findProjectFeedbacksWithPhotos(@Param("projetoId") Long projetoId);
+    @Query("""
+        SELECT new com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO(
+            f.id,
+            u.nomePublico,
+            u.userName,
+            f.descricao,
+            f.avaliacao,
+            f.dataCriacao,
+            u.fotoperfil,
+            f.feedbackType,
+            f.referenciaId,
+            u.isAnonimo
+        )
+        FROM Feedback f
+        JOIN f.user u
+        WHERE f.feedbackType = com.brunofragadev.module.feedback.domain.entity.FeedbackType.ARTIGO
+        AND f.referenciaId = :artigoId
+        ORDER BY f.dataCriacao DESC
+    """)
+    List<FeedbackDTO> findArticleFeedbacksWithPhotos(@Param("artigoId") Long artigoId);
     List<Feedback> findAllByReferenciaId(Long referenciaId);
     @Modifying
     @Query("DELETE FROM Feedback f WHERE f.referenciaId = :referenciaId")

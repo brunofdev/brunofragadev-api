@@ -3,7 +3,7 @@ package com.brunofragadev.module.project.application.usecase;
 import com.brunofragadev.module.project.api.dto.request.ProjectRequest;
 import com.brunofragadev.module.project.api.dto.response.ProjectResponse;
 import com.brunofragadev.module.project.domain.entity.Project;
-import com.brunofragadev.module.project.infrastructure.mapper.ProjectMapper;
+import com.brunofragadev.module.project.application.mapper.ProjectMapper;
 import com.brunofragadev.module.project.domain.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

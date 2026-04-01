@@ -7,7 +7,7 @@ import com.brunofragadev.module.user.domain.entity.Role;
 import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
 import com.brunofragadev.module.user.domain.validator.UserValidator;
-import com.brunofragadev.module.user.infrastructure.mapper.UserMapper;
+import com.brunofragadev.module.user.application.mapper.UserMapper;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

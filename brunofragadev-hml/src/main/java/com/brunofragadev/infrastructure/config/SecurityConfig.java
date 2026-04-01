@@ -47,7 +47,11 @@ public class SecurityConfig {
             "/usuario/senha/recuperacao/alterar-senha",
             "/projetos/publicos",
             "/feedback/geral/listar-todos",
-            "/feedback/projetos/listar-todos/**"
+            "/feedback/projetos/listar-todos/**",
+            "/feedback/artigos/listar-todos/**",
+            "/geral/artigos/listar-todos",
+            "/geral/artigos/**",
+            "/geral/artigos/{slug}"
 
 
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
@@ -72,11 +76,17 @@ public class SecurityConfig {
             entry("/feedback/projetos/atualizar/**", Role.USER),
             entry("/feedback/projetos/excluir/**", Role.USER),
 
+            entry("/feedback/artigos/criar", Role.USER),
+            entry("/feedback/artigos/atualizar/**", Role.USER),
+            entry("/feedback/artigos/excluir/**", Role.USER),
+
             // =========================================
             // ADMINISTRAÇÃO (Apenas ADMIN3)
             // =========================================
             entry("/paineladm/projetos", Role.ADMIN3),
-            entry("/paineladm/projetos/**", Role.ADMIN3)
+            entry("/paineladm/projetos/**", Role.ADMIN3),
+            entry("/paineladm/artigos/**", Role.ADMIN3),
+            entry("/paineladm/atualizar/{id}", Role.ADMIN3)
     );
 
     @Bean

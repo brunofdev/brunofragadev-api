@@ -5,7 +5,7 @@ import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.module.user.domain.exception.InvalidCredentialsException;
 import com.brunofragadev.module.user.domain.exception.UserEmailNotRegisteredException;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
-import com.brunofragadev.module.user.infrastructure.mapper.UserMapper;
+import com.brunofragadev.module.user.application.mapper.UserMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

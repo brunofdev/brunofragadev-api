@@ -1,4 +1,4 @@
-package com.brunofragadev.module.project.infrastructure.mapper;
+package com.brunofragadev.module.project.application.mapper;
 
 import com.brunofragadev.module.project.api.dto.request.ProjectRequest;
 import com.brunofragadev.module.project.api.dto.response.*;

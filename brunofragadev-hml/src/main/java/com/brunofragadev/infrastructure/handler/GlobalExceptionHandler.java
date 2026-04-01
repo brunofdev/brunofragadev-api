@@ -1,5 +1,7 @@
 package com.brunofragadev.infrastructure.handler;
 
+import com.brunofragadev.module.article.domain.exception.ArticleBySlugNotFoundException;
+import com.brunofragadev.module.article.domain.exception.ArticleNotFoundException;
 import com.brunofragadev.module.user.domain.exception.*;
 // import com.brunofragadev.suas.outras.excecoes.aqui;
 
@@ -21,7 +23,6 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // Constrói o JSON padronizado esperado pelo frontend: { status: false, erro: { message: "..." } }
     private ResponseEntity<Map<String, Object>> buildError(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", false);
@@ -46,7 +47,9 @@ public class GlobalExceptionHandler {
     // Exceções de Busca (Ex: Registro não existe no banco) - Status 404
     @ExceptionHandler({
             UserNotFoundException.class,
-            UserEmailNotRegisteredException.class
+            UserEmailNotRegisteredException.class,
+            ArticleBySlugNotFoundException.class,
+            ArticleNotFoundException.class
 
     })
     public ResponseEntity<Map<String, Object>> handleNotFoundExceptions(RuntimeException ex) {
