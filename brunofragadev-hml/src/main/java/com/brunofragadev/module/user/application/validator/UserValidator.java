@@ -1,4 +1,4 @@
-package com.brunofragadev.module.user.domain.validator;
+package com.brunofragadev.module.user.application.validator;
 
 import com.brunofragadev.module.user.api.dto.request.UpdateProfileData;
 import com.brunofragadev.module.user.api.dto.request.UserRegistrationRequest;
@@ -34,4 +34,5 @@ public class UserValidator {
             throw new UsernameAlreadyExistsException("Username already registered in the system");
         }
     }
+
 }
