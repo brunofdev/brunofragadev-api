@@ -50,6 +50,7 @@ public class GlobalExceptionHandler {
             UsernameAlreadyExistsException.class,
             EmailAlreadyExistsException.class,
             SlugAlreadyInUseException.class
+
     })
     public ResponseEntity<Map<String, Object>> handleConflictExceptions(RuntimeException ex) {
         return buildError(HttpStatus.CONFLICT, ex.getMessage());

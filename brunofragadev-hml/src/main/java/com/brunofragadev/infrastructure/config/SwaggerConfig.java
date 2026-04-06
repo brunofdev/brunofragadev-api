@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
         )
 )
 @SecurityScheme(
-        name = "bearerAuth", // 👈 Tem que ser EXATAMENTE o mesmo nome que você usou no Controller
+        name = "bearerAuth",
         type = SecuritySchemeType.HTTP,
         scheme = "bearer",
         bearerFormat = "JWT",

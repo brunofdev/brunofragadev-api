@@ -59,10 +59,11 @@ public class SecurityConfig {
     //ROTAS PROTEGIDAS
     private static final Map<String, Role> PROTECTED_ROUTES = Map.ofEntries(
             // =========================================
-            // USUÁRIO COMUM (Apenas USER ou superior)
+            // USUARIO COMUM (Apenas USER ou superior)
             // =========================================
             entry("/usuario/meus-dados", Role.USER),
             entry("/usuario/meus-dados/atualizar", Role.USER),
+            entry("/usuario/obter-todos", Role.ADMIN3),
 
             // =========================================
             // FEEDBACKS (Geral e Projetos)
@@ -87,8 +88,7 @@ public class SecurityConfig {
             entry("/paineladm/projetos/**", Role.ADMIN3),
             entry("/paineladm/artigos/**", Role.ADMIN3),
             entry("/paineladm/atualizar/{id}", Role.ADMIN3),
-            entry("/paineladm/logs/**", Role.ADMIN3),
-            entry("/usuario/obter-todos", Role.ADMIN3)
+            entry("/paineladm/logs/**", Role.ADMIN3)
     );
 
     @Bean
