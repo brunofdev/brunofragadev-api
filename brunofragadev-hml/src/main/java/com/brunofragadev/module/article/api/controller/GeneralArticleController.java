@@ -35,12 +35,12 @@ public class GeneralArticleController {
     }
 
     @GetMapping("/listar-todos")
-    @Operation(summary = "Listar todos os artigos publicados", description = "Retorna uma lista de artigos que estão disponíveis independente do status.")
+    @Operation(summary = "Listar todos os artigos existentes", description = "Retorna uma lista de artigos que estão disponíveis independente do status.")
     public ResponseEntity<ApiResponse<List<ArticleResponse>>> listAll() {
         return ResponseEntity.ok(ApiResponse.success("Artigos encontrados", listAllArticlesUseCase.execute()));
     }
     @GetMapping("/listar-todos-publicados")
-    @Operation(summary = "Listar todos os artigos publicados", description = "Retorna uma lista de artigos que estão disponíveis para leitura pública.")
+    @Operation(summary = "Listar todos os artigos com status de publicados", description = "Retorna uma lista de artigos que estão disponíveis para leitura pública.")
     public ResponseEntity<ApiResponse<List<ArticleResponse>>> listAllPublished() {
         return ResponseEntity.ok(ApiResponse.success("Artigos encontrados", listPublishedArticlesUseCase.execute()));
     }
