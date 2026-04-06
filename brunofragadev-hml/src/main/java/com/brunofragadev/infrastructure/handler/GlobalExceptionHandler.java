@@ -26,10 +26,8 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // 1. Removido o @Autowired do atributo (transformado em final)
     private final ErrorLogRepository logRepository;
 
-    // 1. Injeção via Construtor
     public GlobalExceptionHandler(ErrorLogRepository logRepository) {
         this.logRepository = logRepository;
     }
