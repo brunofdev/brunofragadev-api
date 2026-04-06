@@ -2,7 +2,6 @@ package com.brunofragadev.infrastructure.email;
 
 import com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
-import com.brunofragadev.shared.domain.EmailProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

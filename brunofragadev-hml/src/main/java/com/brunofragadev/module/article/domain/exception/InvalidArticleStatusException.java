@@ -1,6 +1,6 @@
 package com.brunofragadev.module.article.domain.exception;
 
-import com.brunofragadev.shared.domain.BusinessException;
+import com.brunofragadev.shared.domain.exception.BusinessException;
 
 public class InvalidArticleStatusException extends BusinessException {
     public InvalidArticleStatusException(String status) {

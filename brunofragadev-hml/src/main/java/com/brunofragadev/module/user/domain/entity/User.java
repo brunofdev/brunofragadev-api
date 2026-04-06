@@ -1,7 +1,6 @@
 package com.brunofragadev.module.user.domain.entity;
 
 import com.brunofragadev.module.user.domain.exception.VerificationCodeInvalidException;
-import com.brunofragadev.shared.domain.VerificationCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

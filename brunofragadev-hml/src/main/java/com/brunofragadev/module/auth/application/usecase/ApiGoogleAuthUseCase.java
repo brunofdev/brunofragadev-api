@@ -1,6 +1,6 @@
 package com.brunofragadev.module.auth.application.usecase;
 
-import com.brunofragadev.infrastructure.config.JwtProvider;
+import com.brunofragadev.infrastructure.security.JwtProvider;
 import com.brunofragadev.module.auth.api.dto.request.GoogleAuthRequest;
 import com.brunofragadev.module.auth.api.dto.response.UserLoginResponse;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;

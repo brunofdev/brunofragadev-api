@@ -1,4 +1,4 @@
-package com.brunofragadev.shared.domain;
+package com.brunofragadev.shared.domain.exception;
 
 import lombok.Getter;
 

@@ -1,6 +1,5 @@
 package com.brunofragadev.infrastructure.email;
 
-import com.brunofragadev.shared.domain.EmailProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

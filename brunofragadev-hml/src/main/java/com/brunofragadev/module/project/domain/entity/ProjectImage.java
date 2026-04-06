@@ -1,6 +1,6 @@
 package com.brunofragadev.module.project.domain.entity;
 
-import com.brunofragadev.shared.domain.Auditable;
+import com.brunofragadev.shared.domain.entity.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

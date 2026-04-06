@@ -1,4 +1,4 @@
-package com.brunofragadev.shared.domain;
+package com.brunofragadev.shared.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

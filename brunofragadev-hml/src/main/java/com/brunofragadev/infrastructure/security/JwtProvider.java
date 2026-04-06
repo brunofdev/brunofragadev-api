@@ -1,4 +1,4 @@
-package com.brunofragadev.infrastructure.config;
+package com.brunofragadev.infrastructure.security;
 
 
 import com.brunofragadev.module.user.domain.entity.Role;
@@ -18,11 +18,8 @@ import java.util.function.Function;
 @Component
 public class JwtProvider {
 
-    // Injeta a chave secreta do application.properties
     @Value("${jwt.secret.key}")
     private String jwtSecretKey;
-
-    // Injeta o tempo de expiração do application.properties
     @Value("${jwt.expiration.ms}")
     private long jwtExpirationMs;
 
@@ -54,28 +51,22 @@ public class JwtProvider {
 
     /**
      * Valida se um token é autêntico e pertence a um usuário específico.
-     * (Esta lógica será mais usada no API Gateway, mas é bom tê-la aqui).
      */
     public boolean isTokenValid(String token, String username) {
         final String usernameFromToken = extractUsername(token);
         return (usernameFromToken.equals(username) && !isTokenExpired(token));
     }
-    /**
-     * Tenta validar o token e retornar o usuário.
-     * Se o token estiver inválido ou expirado, não quebra a aplicação, apenas retorna null.
-     */
+
+
     public String validateToken(String token) {
         try {
-            // Tenta extrair o usuário (isso vai falhar se o token for inválido/expirado)
             return extractUsername(token);
         } catch (Exception e) {
-            // Se der qualquer erro (token expirado, assinatura ruim, malformado), retorna null
             return null;
         }
     }
 
     // --- Métodos Privados Auxiliares ---
-
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }

@@ -1,16 +1,19 @@
 package com.brunofragadev.infrastructure.handler;
 
+import com.brunofragadev.infrastructure.log.domain.repository.ErrorLogRepository;
 import com.brunofragadev.module.article.domain.exception.ArticleBySlugNotFoundException;
 import com.brunofragadev.module.article.domain.exception.ArticleNotFoundException;
+import com.brunofragadev.infrastructure.log.domain.entity.ErrorLog;
+import com.brunofragadev.module.article.domain.exception.SlugAlreadyInUseException;
 import com.brunofragadev.module.user.domain.exception.*;
-// import com.brunofragadev.suas.outras.excecoes.aqui;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,6 +25,14 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    // 1. Removido o @Autowired do atributo (transformado em final)
+    private final ErrorLogRepository logRepository;
+
+    // 1. Injeção via Construtor
+    public GlobalExceptionHandler(ErrorLogRepository logRepository) {
+        this.logRepository = logRepository;
+    }
 
     private ResponseEntity<Map<String, Object>> buildError(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
@@ -37,12 +48,12 @@ public class GlobalExceptionHandler {
     // Exceções de Conflito (Ex: Dados duplicados) - Status 409
     @ExceptionHandler({
             UsernameAlreadyExistsException.class,
-            EmailAlreadyExistsException.class
+            EmailAlreadyExistsException.class,
+            SlugAlreadyInUseException.class
     })
     public ResponseEntity<Map<String, Object>> handleConflictExceptions(RuntimeException ex) {
         return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
-
 
     // Exceções de Busca (Ex: Registro não existe no banco) - Status 404
     @ExceptionHandler({
@@ -50,7 +61,6 @@ public class GlobalExceptionHandler {
             UserEmailNotRegisteredException.class,
             ArticleBySlugNotFoundException.class,
             ArticleNotFoundException.class
-
     })
     public ResponseEntity<Map<String, Object>> handleNotFoundExceptions(RuntimeException ex) {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
@@ -60,12 +70,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             InvalidCredentialsException.class,
             VerificationCodeInvalidException.class
-
     })
     public ResponseEntity<Map<String, Object>> handleBadRequestExceptions(RuntimeException ex) {
         return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
-
 
     // Erros de validação do Spring (@Valid em DTOs) - Status 400
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -92,8 +100,19 @@ public class GlobalExceptionHandler {
 
     // Captura genérica de erros não mapeados (Impede o vazamento de stack trace) - Status 500
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
+    public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex, HttpServletRequest request) {
         logger.error("Erro inesperado no servidor:", ex);
-        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro interno no servidor. O administrador do Sistema já esta sabendo");
+
+        String usuario = "Anônimo";
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            usuario = SecurityContextHolder.getContext().getAuthentication().getName();
+        }
+
+        // 2. Corrigido para .register em inglês
+        ErrorLog log = ErrorLog.register(ex, request.getRequestURI(), request.getMethod(), usuario);
+        logRepository.save(log);
+
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Ocorreu um erro interno no servidor. O administrador do Sistema já está sabendo. Código: " + log.getId());
     }
 }

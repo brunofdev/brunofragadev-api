@@ -1,4 +1,4 @@
-package com.brunofragadev.shared.domain;
+package com.brunofragadev.module.user.domain.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;

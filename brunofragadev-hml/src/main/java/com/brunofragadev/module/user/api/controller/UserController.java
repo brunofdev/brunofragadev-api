@@ -3,7 +3,7 @@ package com.brunofragadev.module.user.api.controller;
 import com.brunofragadev.module.auth.api.dto.response.UserLoginResponse;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import com.brunofragadev.module.user.domain.entity.User;
-import com.brunofragadev.infrastructure.config.JwtProvider;
+import com.brunofragadev.infrastructure.security.JwtProvider;
 import com.brunofragadev.module.user.api.dto.request.UpdateProfileData;
 import com.brunofragadev.module.user.api.dto.request.UserRegistrationRequest;
 import com.brunofragadev.module.user.api.dto.request.PasswordChangeRequest;

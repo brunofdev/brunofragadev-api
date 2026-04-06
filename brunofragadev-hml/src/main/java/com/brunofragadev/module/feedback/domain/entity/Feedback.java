@@ -1,7 +1,7 @@
 package com.brunofragadev.module.feedback.domain.entity;
 
 import com.brunofragadev.module.user.domain.entity.User;
-import com.brunofragadev.shared.domain.Auditable;
+import com.brunofragadev.shared.domain.entity.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 

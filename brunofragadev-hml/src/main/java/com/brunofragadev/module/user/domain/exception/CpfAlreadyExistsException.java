@@ -1,6 +1,8 @@
 package com.brunofragadev.module.user.domain.exception;
 
-public class CpfAlreadyExistsException extends RuntimeException{
+import com.brunofragadev.shared.domain.exception.BusinessException;
+
+public class CpfAlreadyExistsException extends BusinessException {
     public CpfAlreadyExistsException(String message){
         super(message);
     }
