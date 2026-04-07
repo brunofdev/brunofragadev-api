@@ -7,7 +7,7 @@ import com.brunofragadev.module.feedback.domain.entity.Feedback;
 import com.brunofragadev.module.feedback.domain.repository.FeedbackRepository;
 import com.brunofragadev.module.feedback.application.mapper.FeedbackMapper;
 import com.brunofragadev.module.user.domain.entity.User;
-import com.brunofragadev.shared.service.ReferenceResolver;
+import com.brunofragadev.shared.application.service.ReferenceResolverFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,23 +16,23 @@ public class CreateFeedbackUseCase {
     private final FeedbackRepository feedbackRepository;
     private final FeedbackMapper feedbackMapper;
     private final EmailService emailService;
-    private final ReferenceResolver referenceResolver;
+    private final ReferenceResolverFactory resolverFactory;
 
     public CreateFeedbackUseCase(FeedbackRepository feedbackRepository,
                                  FeedbackMapper feedbackMapper,
                                  EmailService emailService,
-                                 ReferenceResolver referenceResolver) {
+                                 ReferenceResolverFactory resolverFactory) {
         this.feedbackRepository = feedbackRepository;
         this.feedbackMapper = feedbackMapper;
         this.emailService = emailService;
-        this.referenceResolver = referenceResolver;
+        this.resolverFactory = resolverFactory;
     }
 
     public FeedbackDTO execute(FeedbackCreateRequest request, User user) {
         Feedback feedback = feedbackMapper.toNewFeedback(request, user);
         feedbackRepository.save(feedback);
         FeedbackDTO feedbackDTO = feedbackMapper.toDTO(feedback);
-        String feedbackLocation = referenceResolver.resolveName(feedbackDTO.feedbackType(), feedbackDTO.referenciaId());
+        String feedbackLocation = resolverFactory.resolveName(feedbackDTO.feedbackType(), feedbackDTO.referenciaId());
         emailService.sendNewFeedbackAlertToAdmin(feedbackDTO, feedbackLocation);
         return feedbackDTO;
     }

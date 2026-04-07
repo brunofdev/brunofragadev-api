@@ -88,7 +88,6 @@ public class Article extends Auditable {
         if (title.length() > 150) throw new IllegalArgumentException("Título excede 150 caracteres");
         if (!slug.matches("^[a-z0-9-]+$")) throw new IllegalArgumentException("Slug com formato inválido");
     }
-
     public void publish() {
         if (this.status == ArticleStatus.PUBLICADO) return;
         this.status = ArticleStatus.PUBLICADO;
