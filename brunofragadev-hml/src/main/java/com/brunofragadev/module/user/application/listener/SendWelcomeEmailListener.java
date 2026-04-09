@@ -19,6 +19,6 @@ public class SendWelcomeEmailListener {
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onVerificationSuccess(ActivateAccountEvent event){
-        emailService.sendWelcomeEmail(event.userDTO());
+        emailService.sendWelcomeEmail(event.userDTO().email(), event.userDTO().nome());
     }
 }

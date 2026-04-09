@@ -20,18 +20,15 @@ public class ProcessGoogleLoginUseCase {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
     private final ApplicationEventPublisher eventPublisher;
 
     public ProcessGoogleLoginUseCase(UserRepository userRepository,
                                      UserMapper userMapper,
                                      PasswordEncoder passwordEncoder,
-                                     EmailService emailService,
                                      ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
         this.eventPublisher = eventPublisher;
     }
 

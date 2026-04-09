@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class ErrorLogRepositoryAdapter implements ErrorLogRepository {
@@ -32,5 +34,9 @@ public class ErrorLogRepositoryAdapter implements ErrorLogRepository {
                 springPage.getTotalPages(),
                 springPage.getTotalElements()
         );
+    }
+    @Override
+    public List<ErrorLog> findAll (){
+        return jpaRepository.findAll();
     }
 }

@@ -25,7 +25,7 @@ public class ErrorLog {
     @Column(nullable = false)
     private String endpoint;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 30)
     private String metodoHttp;
 
     @Column(nullable = false, length = 500)
@@ -43,7 +43,6 @@ public class ErrorLog {
         log.endpoint = endpoint;
         log.metodoHttp = httpMethod;
         log.usuarioLogado = loggedUser;
-
         log.mensagemResumo = extractSafeMessage(ex);
         log.stackTraceCompleta = extractStackTrace(ex);
 

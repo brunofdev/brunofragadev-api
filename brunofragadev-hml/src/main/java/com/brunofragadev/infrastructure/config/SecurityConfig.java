@@ -51,7 +51,8 @@ public class SecurityConfig {
             "/geral/artigos/listar-todos",
             "/geral/artigos/listar-todos-publicados",
             "/geral/artigos/listar-ultimos-publicados",
-            "/geral/artigos/{slug}"
+            "/geral/artigos/{slug}",
+            "/h2-console/**" //usado localmente apenas para testes
 
 
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
@@ -96,6 +97,9 @@ public class SecurityConfig {
         return httpSecurity
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(PUBLIC_ENDPOINTS).permitAll();

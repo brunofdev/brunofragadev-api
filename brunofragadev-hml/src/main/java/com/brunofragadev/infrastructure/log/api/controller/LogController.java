@@ -17,6 +17,7 @@ public class LogController {
 
     private final GetPaginatedLogsUseCase getPaginatedLogsUseCase;
 
+
     public LogController(GetPaginatedLogsUseCase getPaginatedLogsUseCase) {
         this.getPaginatedLogsUseCase = getPaginatedLogsUseCase;
     }
