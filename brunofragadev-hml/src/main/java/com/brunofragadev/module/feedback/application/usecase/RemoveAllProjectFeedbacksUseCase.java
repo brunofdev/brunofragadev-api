@@ -2,6 +2,8 @@ package com.brunofragadev.module.feedback.application.usecase;
 
 
 import com.brunofragadev.module.feedback.domain.entity.Feedback;
+import com.brunofragadev.module.feedback.domain.exception.FeedbackNotFoundException;
+import com.brunofragadev.module.feedback.domain.exception.NullFeedbackReferenceException;
 import com.brunofragadev.module.feedback.domain.repository.FeedbackRepository;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +34,7 @@ public class RemoveAllProjectFeedbacksUseCase {
 
     public void execute (Long referenceId){
         if (referenceId == null){
-            throw new IllegalArgumentException("Referencia não pode ser vazia para deletar os feedbacks relacionados a um projeto");
+            throw new NullFeedbackReferenceException("Referencia não pode ser vazia para deletar os feedbacks relacionados a um projeto");
         }
         feedbackRepository.deleteAllByReferenceId(referenceId);
     }
