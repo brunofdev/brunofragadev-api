@@ -160,6 +160,14 @@ graph TD
 - **Guia de setup**: passos sequenciais com comandos de terminal
 - Listagem pública e consulta detalhada por ID
 
+### 📁 Gerenciamento de Artigos
+
+- CRUD completo de artigos com título, subtilo, tags, body extenso para escrita do artigo
+- Galeria de imagens por projeto com URL, ordem de exibição, legenda e definição de capa
+- Foto de capa
+- Renderização automatica dos ultimos 5 artigos publicadas
+- Renderização em pagina exclusiva automatica após a publicação na farramenta de escrita
+
 ### 💬 Sistema de Feedbacks
 
 - Submissão de feedbacks com comentário e nota de 1 a 5
