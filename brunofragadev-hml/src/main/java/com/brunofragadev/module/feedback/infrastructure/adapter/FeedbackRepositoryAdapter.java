@@ -1,8 +1,9 @@
-package com.brunofragadev.module.feedback.infrastructure.persistence;
+package com.brunofragadev.module.feedback.infrastructure.adapter;
 
 import com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO;
 import com.brunofragadev.module.feedback.domain.entity.Feedback;
 import com.brunofragadev.module.feedback.domain.repository.FeedbackRepository;
+import com.brunofragadev.module.feedback.infrastructure.persistence.SpringDataFeedbackRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

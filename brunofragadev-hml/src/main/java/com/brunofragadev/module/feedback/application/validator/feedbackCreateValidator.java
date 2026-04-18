@@ -18,7 +18,7 @@ public class feedbackCreateValidator {
             if (referenciaId == null) {
                 throw new IllegalArgumentException("O ID de referência é obrigatório para feedbacks de projeto.");
             }
-            getProjectByIdUseCase.execute(referenciaId);
+            getProjectByIdUseCase.returnDTO(referenciaId);
         }
     }
 }

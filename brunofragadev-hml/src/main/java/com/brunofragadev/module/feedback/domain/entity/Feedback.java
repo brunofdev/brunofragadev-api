@@ -30,7 +30,7 @@ public class Feedback extends Auditable {
     @Column(name = "tipo_feedback", nullable = false)
     private FeedbackType feedbackType;
 
-    // Se for GERAL (Home), fica NULL. Se for Projeto, guarda o ID do Projeto etc.
+    // Se for GERAL (Home), fica zero. Se for Projeto ou artigo , guarda o ID de referencia.
     @Column(name = "referencia_id", nullable = true)
     private Long referenciaId;
 

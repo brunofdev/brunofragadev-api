@@ -1,11 +1,10 @@
-package com.brunofragadev.module.article.infrastructure.persistence;
+package com.brunofragadev.module.article.infrastructure.adapter;
 
 
-import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
-import com.brunofragadev.module.article.api.dto.response.ArticleSummaryResponse;
 import com.brunofragadev.module.article.domain.entity.Article;
 import com.brunofragadev.module.article.domain.repository.ArticleRepository;
 import com.brunofragadev.module.article.domain.entity.ArticleStatus;
+import com.brunofragadev.module.article.infrastructure.persistence.SpringDataArticleRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

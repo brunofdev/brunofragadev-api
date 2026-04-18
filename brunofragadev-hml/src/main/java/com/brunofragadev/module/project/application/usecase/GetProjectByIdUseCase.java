@@ -20,9 +20,14 @@ public class GetProjectByIdUseCase {
     }
 
     @Transactional(readOnly = true)
-    public ProjectResponse execute(Long id) {
+    public ProjectResponse returnDTO(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + id));
         return projectMapper.toDTO(project);
+    }
+    @Transactional(readOnly = true)
+    public Project returnEntity(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + id));
     }
 }

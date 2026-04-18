@@ -1,7 +1,8 @@
-package com.brunofragadev.module.project.infrastructure.persistence;
+package com.brunofragadev.module.project.infrastructure.adapter;
 
 import com.brunofragadev.module.project.domain.entity.Project;
 import com.brunofragadev.module.project.domain.repository.ProjectRepository;
+import com.brunofragadev.module.project.infrastructure.persistence.SpringDataProjectRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

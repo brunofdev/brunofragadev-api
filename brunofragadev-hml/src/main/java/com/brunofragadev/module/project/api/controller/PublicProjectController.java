@@ -40,7 +40,7 @@ public class PublicProjectController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Projeto não encontrado")
     public ResponseEntity<ApiResponse<ProjectResponse>> getPublicProjectById(
             @Parameter(description = "ID único do projeto") @PathVariable Long id) {
-        ProjectResponse project = getProjectByIdUseCase.execute(id);
+        ProjectResponse project = getProjectByIdUseCase.returnDTO(id);
         return ResponseEntity.ok(ApiResponse.success("Detalhes do projeto carregados", project));
     }
 }

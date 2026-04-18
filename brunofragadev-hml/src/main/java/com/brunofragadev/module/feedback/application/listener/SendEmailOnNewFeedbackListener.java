@@ -22,7 +22,7 @@ public class SendEmailOnNewFeedbackListener {
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onCreateNewFeedback(NewFeedbackEvent event){
-            emailService.sendNewFeedbackAlertToAdmin(event.feedbackDTO(), event.feedbackLocation());
+            emailService.sendNewFeedbackAlertToAdmin(event.feedbackDTO(), event.feedbackTitle());
     }
 }
 
