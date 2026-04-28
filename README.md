@@ -2,8 +2,8 @@
 
 # 🧑‍💻 BrunoFragaDev — Portfolio API
 
-**API RESTful de produção que serve a plataforma [brunofragadev.com](https://www.brunofragadev.com).**  
-Autenticação completa, gerenciamento de portfólio, artigos e sistema de feedbacks.
+**API RESTful em produção que serve a plataforma [brunofragadev.com](https://www.brunofragadev.com).**  
+Autenticação completa com OAuth2, gerenciamento de portfólio, artigos e sistema de feedbacks.
 
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.2-6DB33F?style=flat-square&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
@@ -12,196 +12,131 @@ Autenticação completa, gerenciamento de portfólio, artigos e sistema de feedb
 [![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=flat-square&logo=swagger&logoColor=black)](https://swagger.io)
 [![Brevo](https://img.shields.io/badge/Brevo-Email_API-0B996E?style=flat-square)](https://www.brevo.com)
 [![MySQL](https://img.shields.io/badge/MySQL-Produção-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/features/actions)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](./LICENSE)
 
-🔗 **[brunofragadev.com](https://www.brunofragadev.com)**
+🔗 **[brunofragadev.com](https://www.brunofragadev.com)** — acesse a plataforma que esta API serve em produção
 
 </div>
 
 ---
 
+> ⚡ **Esta API está em produção.** Não é um projeto de estudo abandonado — está rodando, atendendo requisições reais e sendo evoluído ativamente.
+
+---
+
 ## 📖 Sobre o Projeto
 
-Backend da plataforma **[brunofragadev.com](https://www.brunofragadev.com)** — um sistema de portfólio pessoal com autenticação completa, gerenciamento de projetos, artigos e coleta de feedbacks de usuários reais.
+Backend da plataforma **[brunofragadev.com](https://www.brunofragadev.com)** — portfólio pessoal com autenticação completa, gerenciamento de projetos, artigos e coleta de feedbacks de usuários reais.
 
-Este projeto foi desenvolvido simulando um **ambiente de produção real**, com foco em:
+O que diferencia este projeto de um CRUD comum:
 
-- 🏗️ **Clean Architecture + DDD** — domínio isolado de frameworks
-- 🔒 **Segurança robusta** — JWT + Google OAuth2 + controle de acesso por roles
-- 📬 **Comunicação assíncrona** — e-mails transacionais via Brevo API (WebClient)
-- ⚡ **Design stateless** — escalabilidade horizontal sem estado de sessão
-- 🧪 **Testabilidade** — Use Cases com responsabilidade única (SRP)
-
----
-
-## ✨ Funcionalidades Completas
-
-### 🔐 Módulo de Autenticação (`/auth`)
-
-- Login com **credenciais** (username/senha) com geração de token **JWT** (`POST /auth/login`)
-- Login social via **Google OAuth2** — processa o token do Google e retorna um JWT da plataforma (`POST /auth/google`)
-- Verificação de **disponibilidade de username** (`GET /auth/verificar-username`)
-- Verificação de **disponibilidade de e-mail** (`GET /auth/verificar-email`)
-- Todos os tokens incluem as roles do usuário para controle de acesso granular
+- **Está em produção** com CI/CD automatizado via GitHub Actions
+- **Dois fluxos de autenticação** — credenciais próprias com JWT e login social via Google OAuth2, ambos emitindo tokens da plataforma
+- **E-mails transacionais reais** — integração com Brevo API via WebClient para ativação de conta, recuperação de senha e alertas
+- **Arquitetura orientada a casos de uso** — cada operação tem sua própria classe com responsabilidade única, sem God Services
+- **Domínio isolado de infraestrutura** — o núcleo de negócio não conhece Spring, JPA nem nenhum framework externo
 
 ---
 
-### 👤 Módulo de Usuários (`/usuario`)
+## 🏛️ Arquitetura e Decisões de Design
 
-**Cadastro e Ativação**
-- Cadastro de novo usuário com status **pendente** (`POST /usuario/cadastro`)
-  - Envia automaticamente **e-mail de boas-vindas** via Brevo
-  - Envia **código de verificação de 6 dígitos** para ativação
-- Ativação da conta via código de verificação recebido por e-mail (`POST /usuario/ativar-conta`)
-- Reenvio do código de ativação caso o anterior expire
+### Clean Architecture + Use Cases com Responsabilidade Única
 
-**Recuperação de Acesso**
-- Solicitação de **recuperação de senha** — envia código de segurança por e-mail (`POST /usuario/recuperar-senha`)
-- **Redefinição de senha** com o código recebido (`POST /usuario/redefinir-senha`)
-- **Alteração de senha** estando autenticado (`PATCH /usuario/alterar-senha`)
+A decisão mais importante do projeto foi abandonar o padrão `UserService` com dezenas de métodos e adotar **Use Cases individuais**. Cada operação de negócio tem sua própria classe:
 
-**Gerenciamento de Perfil**
-- Consulta das informações do usuário autenticado (`GET /usuario/me`)
-- Edição de perfil: nome público, profissão, telefone, país, cidade, biografia (`PATCH /usuario/atualizar-perfil`)
-- Atualização de links externos: **GitHub** e **LinkedIn** (`PATCH /usuario/atualizar-links`)
-- Upload e atualização de **foto de perfil** via URL (`PATCH /usuario/atualizar-foto`)
-- **Modo anônimo**: alternância de visibilidade do perfil (`PATCH /usuario/alternar-anonimo`)
+```
+RegisterUserUseCase         → cadastra um novo usuário e dispara e-mail de ativação
+ActivateAccountUseCase      → valida o código de 6 dígitos e ativa a conta
+ProcessGoogleLoginUseCase   → processa token do Google e emite JWT da plataforma
+RequestPasswordResetUseCase → inicia o fluxo de recuperação enviando código por e-mail
+ResetPasswordUseCase        → redefine a senha com o código recebido
+UpdateProfileUseCase        → atualiza dados de perfil do usuário autenticado
+CreateProjectUseCase        → cria projeto com ficha técnica e galeria
+CreateFeedbackUseCase       → registra feedback e notifica o administrador por e-mail
+```
 
-**Painel Administrativo**
-- Listagem paginada de todos os usuários (`GET /usuario`) — requer `ADMIN1`
-- Busca de usuário por ID (`GET /usuario/{id}`) — requer `ADMIN1`
-- Remoção de usuário (`DELETE /usuario/{id}`) — requer `ADMIN2`
+O resultado prático: cada Use Case pode ser testado de forma completamente isolada, sem nenhum mock de framework. Adicionar um novo fluxo não exige tocar em código existente.
 
 ---
 
-### 📁 Módulo de Projetos (`/projeto`)
+### Dois Fluxos de Autenticação com um Único Token
 
-**CRUD Completo**
-- Criar projeto com título, descrição, status, papel no projeto, data, URL do repositório e URL live (`POST /projeto`) — requer `ADMIN1`
-- Listar todos os projetos com paginação (`GET /projeto`)
-- Buscar projeto por ID com todos os dados relacionados (`GET /projeto/{id}`)
-- Atualizar projeto (`PUT /projeto/{id}`) — requer `ADMIN1`
-- Deletar projeto e todos os dados associados (`DELETE /projeto/{id}`) — requer `ADMIN2`
+O sistema suporta login por credenciais e login social pelo Google. Em ambos os casos, o resultado é um JWT próprio da plataforma — o frontend nunca precisa saber qual fluxo foi usado:
 
-**Galeria de Imagens**
-- Adicionar imagem ao projeto com URL, ordem de exibição, legenda e definição de capa (`POST /projeto/{id}/imagem`)
-- Listar imagens de um projeto
-- Atualizar dados de uma imagem (`PUT /projeto/{id}/imagem/{imagemId}`)
-- Remover imagem (`DELETE /projeto/{id}/imagem/{imagemId}`)
-- Definir **imagem de capa** do projeto
+```
+Credenciais  →  LoginUseCase           →  JWT da plataforma
+Google OAuth2 →  ProcessGoogleLoginUseCase  →  JWT da plataforma
+```
 
-**Ficha Técnica**
-- Criar/atualizar ficha técnica com: linguagem, paradigma, framework, bibliotecas e infraestrutura (`PUT /projeto/{id}/ficha-tecnica`)
-- Consultar ficha técnica de um projeto
-
-**Guia de Setup**
-- Criar/atualizar guia de configuração com observações e passos sequenciais (`PUT /projeto/{id}/setup`)
-- Cada passo contém: número de ordem, texto descritivo e comando de terminal
-- Consultar o setup completo de um projeto
+Essa decisão isola o frontend de detalhes de autenticação e permite adicionar outros provedores (GitHub, LinkedIn) sem alterar nenhum contrato existente.
 
 ---
 
-### 📝 Módulo de Artigos (`/artigo`)
+### Integração com Brevo via WebClient
 
-**CRUD Completo**
-- Criar artigo com título, subtítulo, tags, corpo extenso e foto de capa (`POST /artigo`) — requer `ADMIN1`
-- Listar todos os artigos com paginação (`GET /artigo`)
-- Buscar artigo por ID (`GET /artigo/{id}`)
-- Listar os **5 artigos mais recentes** publicados (`GET /artigo/recentes`)
-- Atualizar artigo (`PUT /artigo/{id}`) — requer `ADMIN1`
-- Deletar artigo (`DELETE /artigo/{id}`) — requer `ADMIN2`
-
-**Galeria de Imagens**
-- Adicionar imagens ao artigo com URL, ordem de exibição e legenda (`POST /artigo/{id}/imagem`)
-- Remover imagem do artigo (`DELETE /artigo/{id}/imagem/{imagemId}`)
-
-**Publicação**
-- Renderização automática em página exclusiva do portfólio após publicação
-- Suporte a escrita de conteúdo extenso via campo `body`
-
----
-
-### 💬 Módulo de Feedbacks (`/feedback`)
-
-**Submissão**
-- Enviar feedback com comentário e **nota de 1 a 5** (`POST /feedback`)
-- Suporte a feedbacks **Gerais** (sobre a plataforma) ou **vinculados** a um Projeto ou Artigo específico (`feedbackType` + `referenciaId`)
-- Envio de feedbacks **anônimos** — sem necessidade de autenticação
-
-**Consulta**
-- Listar todos os feedbacks com paginação (`GET /feedback`)
-- Listar feedbacks de um projeto ou artigo específico (`GET /feedback/referencia/{id}`)
-- Buscar feedback por ID (`GET /feedback/{id}`)
-
-**Moderação** — requer `ADMIN1`
-- Editar conteúdo de um feedback (`PUT /feedback/{id}`)
-- Excluir feedback individual (`DELETE /feedback/{id}`)
-- **Exclusão em massa** de todos os feedbacks vinculados a um projeto ou artigo (`DELETE /feedback/referencia/{id}`)
-
-**Notificações**
-- Envio automático de **e-mail de alerta para o administrador** a cada novo feedback recebido
-
----
-
-### 📧 Módulo de E-mails (Brevo API)
-
-Todos os e-mails são enviados de forma assíncrona via **WebClient** integrado à API do Brevo:
+E-mails transacionais são enviados de forma **não bloqueante** via `WebClient` integrado à API do Brevo. A escolha pelo WebClient em vez do `RestTemplate` garante que o envio de e-mail nunca bloqueia a thread principal da requisição:
 
 | Evento | E-mail disparado |
 |---|---|
-| Cadastro de usuário | Boas-vindas + código de ativação |
-| Solicitação de ativação | Código de verificação de 6 dígitos |
+| Cadastro de usuário | Boas-vindas + código de ativação de 6 dígitos |
+| Reenvio de ativação | Novo código de verificação |
 | Recuperação de senha | Código de segurança |
 | Novo feedback recebido | Alerta para o administrador |
 
 ---
 
-### 🛡️ Segurança e Controle de Acesso (RBAC)
+### CI/CD com GitHub Actions
 
-O sistema implementa **Role-Based Access Control** com 4 níveis hierárquicos cumulativos:
-
-```
-ADMIN3  →  todas as permissões anteriores + ações exclusivas de nível 3
-ADMIN2  →  ROLE_ADMIN2 + ROLE_ADMIN1 + ROLE_USER
-ADMIN1  →  ROLE_ADMIN1 + ROLE_USER
-USER    →  ROLE_USER (acesso autenticado básico)
-```
-
-- Autenticação **stateless** via JWT — sem sessões no servidor
-- Login social via **Google OAuth2** com emissão de JWT próprio da plataforma
-- **Bean Validation** (Jakarta) em todos os DTOs com mensagens descritivas
-- Respostas de erro **padronizadas** via `@ControllerAdvice` — sem stack traces expostos
-- Código de verificação gerado com lógica própria (`VerificationCode`)
-- Auditoria automática de `createdAt` e `updatedAt` em todos os registros
+O pipeline de deploy está configurado em `.github/workflows` e garante que nenhuma alteração chega à produção sem passar pelo processo de build e validação automatizados.
 
 ---
 
-## 🏛️ Arquitetura
+## ⚙️ Funcionalidades
 
-O projeto segue **Clean Architecture** combinada com **Domain-Driven Design (DDD)**, organizado em quatro camadas isoladas:
+### 🔐 Autenticação (`/auth`)
 
-| Camada | Responsabilidade |
-|---|---|
-| **Domain** | Núcleo do sistema. Entidades de negócio (`User`, `Project`, `Article`, `Feedback`) e exceções de domínio. Sem dependências de frameworks. |
-| **Application** | Orquestra as regras de negócio via **Use Cases com responsabilidade única** — evita "God Classes". |
-| **Infrastructure** | Comunicação com o mundo externo: JPA, Spring Security/JWT, Brevo (WebClient) e handler global de exceções. |
-| **API / Controllers** | Porta de entrada HTTP. Valida contratos de entrada via DTOs e delega à camada de Application. |
+- Login com credenciais (username/senha) com geração de token JWT
+- Login social via Google OAuth2 com emissão de JWT próprio da plataforma
+- Verificação de disponibilidade de username e e-mail
 
-### Por que Use Cases ao invés de Services genéricos?
+### 👤 Usuários (`/usuario`)
 
-Cada Use Case resolve **um único problema**, resultando em maior legibilidade, testabilidade e manutenibilidade:
+- Cadastro com ativação via código de 6 dígitos enviado por e-mail
+- Recuperação e redefinição de senha com código de segurança
+- Edição de perfil: nome público, profissão, telefone, país, cidade, biografia, links
+- Modo anônimo — controle de visibilidade do perfil
+- Painel administrativo com listagem paginada e remoção de usuários
+
+### 📁 Projetos (`/projeto`)
+
+- CRUD completo com galeria de imagens, ficha técnica e guia de setup
+- Cada projeto possui: título, descrição, status, papel, repositório, URL live
+- Ficha técnica: linguagem, paradigma, framework, bibliotecas, infraestrutura
+- Guia de setup com passos sequenciais e comandos de terminal
+
+### 📝 Artigos (`/artigo`)
+
+- CRUD completo com suporte a conteúdo extenso, tags e galeria de imagens
+- Endpoint dedicado para os 5 artigos mais recentes
+- Renderização automática em página exclusiva após publicação
+
+### 💬 Feedbacks (`/feedback`)
+
+- Submissão com nota de 1 a 5, vinculada a projeto, artigo ou à plataforma em geral
+- Suporte a feedbacks anônimos — sem autenticação necessária
+- Notificação automática por e-mail para o administrador a cada novo feedback
+- Moderação e exclusão em massa por referência
+
+### 🛡️ Controle de Acesso (RBAC)
+
+Quatro níveis hierárquicos cumulativos:
 
 ```
-RegisterUserUseCase         → apenas cadastra um novo usuário
-ActivateAccountUseCase      → apenas ativa uma conta pendente
-ProcessGoogleLoginUseCase   → apenas processa o login social
-RequestPasswordResetUseCase → apenas inicia o fluxo de recuperação
-ResetPasswordUseCase        → apenas redefine a senha com o código
-UpdateProfileUseCase        → apenas atualiza dados de perfil
-CreateProjectUseCase        → apenas cria um novo projeto
-AddProjectImageUseCase      → apenas adiciona imagem a um projeto
-CreateFeedbackUseCase       → apenas registra um feedback
-...
+ADMIN3  →  todas as permissões
+ADMIN2  →  ROLE_ADMIN2 + ROLE_ADMIN1 + ROLE_USER
+ADMIN1  →  ROLE_ADMIN1 + ROLE_USER
+USER    →  acesso autenticado básico
 ```
 
 ---
@@ -212,58 +147,45 @@ CreateFeedbackUseCase       → apenas registra um feedback
 src/main/java/com/brunofragadev/
 ├── module/
 │   ├── auth/
-│   │   ├── api/               → Controllers de autenticação e DTOs
+│   │   ├── api/               → Controllers e DTOs de autenticação
 │   │   └── application/       → Use Cases: Login, GoogleOAuth2, JWT
 │   ├── user/
-│   │   ├── api/               → Controllers e DTOs (Request/Response)
+│   │   ├── api/               → Controllers e DTOs
 │   │   ├── application/       → Use Cases: Register, Activate, UpdateProfile, RecoverPassword...
 │   │   ├── domain/            → Entidade User, Role, exceções de domínio
 │   │   └── infrastructure/    → Mappers, Repositories JPA
 │   ├── project/
-│   │   ├── api/               → Controllers e DTOs de projeto
+│   │   ├── api/               → Controllers e DTOs
 │   │   ├── application/       → Use Cases: CRUD, Galeria, FichaTecnica, Setup
 │   │   └── domain/            → Project, ProjectImage, TechnicalSheet, SetupStep
 │   ├── article/
-│   │   ├── api/               → Controllers e DTOs de artigo
+│   │   ├── api/               → Controllers e DTOs
 │   │   ├── application/       → Use Cases: CRUD, Galeria, Publicação
 │   │   └── domain/            → Article, ArticleImage
 │   └── feedback/
-│       ├── api/               → Controllers e DTOs de feedback
+│       ├── api/               → Controllers e DTOs
 │       ├── application/       → Use Cases: Criar, Listar, Moderar, ExcluirEmMassa
 │       └── domain/            → Feedback, FeedbackType
 ├── infrastructure/
-│   ├── config/                → Configurações globais: Security, Audit, JWT, WebClient
-│   ├── email/                 → Integração com a API do Brevo (WebClient)
+│   ├── config/                → Security, Audit, JWT, WebClient
+│   ├── email/                 → Integração com Brevo API
 │   └── handler/               → Global Exception Handler (@ControllerAdvice)
-└── shared/                    → Utilitários compartilhados: Auditable, VerificationCode
+└── shared/                    → Auditable, VerificationCode
 ```
 
 ---
 
 ## 🗄️ Modelo de Dados
 
-### Diagrama de Entidades (ERD)
-
 ```mermaid
 erDiagram
     USER ||--o{ FEEDBACK : "escreve"
     USER {
         Long id PK
-        string nome
         string userName UK
         string email UK
-        string senha
-        string nomePublico
         string role
         boolean contaAtiva
-        string telefone
-        string profissao
-        string pais
-        string cidade
-        string fotoperfil
-        string github
-        string linkedin
-        string bio
         boolean isAnonimo
     }
 
@@ -271,46 +193,6 @@ erDiagram
     PROJECT ||--o{ PROJECT_IMAGE : "contém"
     PROJECT ||--|| TECHNICAL_SHEET : "especifica"
     PROJECT ||--|| PROJECT_SETUP : "possui"
-
-    PROJECT {
-        Long id PK
-        string title
-        string description
-        string video
-        string status
-        string papel
-        string dataProjeto
-        string repositorioUrl
-        string liveUrl
-    }
-
-    PROJECT_IMAGE {
-        Long id PK
-        string urlImagem
-        int ordemExibicao
-        string legenda
-        boolean isCapa
-        Long projeto_id FK
-    }
-
-    TECHNICAL_SHEET {
-        string linguagem
-        string paradigma
-        string framework
-        string bibliotecas
-        string infraestrutura
-    }
-
-    PROJECT_SETUP {
-        string obs
-    }
-
-    SETUP_STEP {
-        int num
-        string text
-        string cmd
-        Long projeto_id FK
-    }
 
     PROJECT_SETUP ||--o{ SETUP_STEP : "contém"
 
@@ -324,6 +206,8 @@ erDiagram
     }
 ```
 
+---
+
 ## ⚙️ Tecnologias
 
 | Categoria | Tecnologia |
@@ -333,8 +217,8 @@ erDiagram
 | Segurança | Spring Security + JWT |
 | Login Social | Google OAuth2 |
 | Persistência | Spring Data JPA / Hibernate |
-| Banco de Dados | H2 (desenvolvimento) / MySQL (produção) |
-| Cliente HTTP | Spring WebClient (reativo) |
+| Banco de Dados | H2 (dev) / MySQL (produção) |
+| Cliente HTTP | Spring WebClient |
 | E-mail | Brevo API |
 | Documentação | Swagger UI / SpringDoc OpenAPI |
 | Build | Maven |
@@ -349,7 +233,7 @@ erDiagram
 
 - Java 21+
 - Maven 3.9+
-- Conta no [Brevo](https://www.brevo.com/) para e-mails transacionais *(opcional em dev)*
+- Conta no [Brevo](https://www.brevo.com/) *(opcional em dev)*
 - Credenciais do Google OAuth2 *(opcional em dev)*
 
 ### 1. Clone o repositório
@@ -361,77 +245,21 @@ cd brunofragadev-api/brunofragadev-hml
 
 ### 2. Configure as variáveis de ambiente
 
-Crie um arquivo `.env` ou configure no `application.properties`:
-
 ```properties
-# JWT
 jwt.secret=sua_chave_secreta_aqui
 jwt.expiration=86400000
-
-# Brevo (E-mail)
 brevo.api.key=sua_api_key_brevo
-
-# Google OAuth2
 spring.security.oauth2.client.registration.google.client-id=seu_client_id
 spring.security.oauth2.client.registration.google.client-secret=seu_client_secret
 ```
 
-### 3. Execute a aplicação
+### 3. Execute
 
 ```bash
 mvn spring-boot:run
 ```
 
-A API estará disponível em `http://localhost:8080`
-
-### 4. Acesse a documentação interativa
-
-```
-http://localhost:8080/swagger-ui.html
-```
-
----
-
-## 🔄 Fluxo: Cadastro e Ativação de Conta
-
-```
-Usuário → POST /usuario/cadastro
-        → RegisterUserUseCase verifica unicidade (email + username)
-        → Usuário salvo com status "PENDENTE"
-        → EmailService dispara boas-vindas + código de 6 dígitos via Brevo
-        → HTTP 201 Created
-
-Usuário → POST /usuario/ativar-conta (código recebido por e-mail)
-        → ActivateAccountUseCase valida e ativa a conta
-        → Status alterado para "ATIVO"
-        → HTTP 200 OK
-```
-
----
-
-## 📖 Documentação da API
-
-A documentação completa dos endpoints está disponível via **Swagger UI** após iniciar a aplicação, ou no formato OpenAPI em `/v3/api-docs`.
-
-| Módulo | Prefixo base |
-|---|---|
-| Autenticação | `/auth` |
-| Usuários | `/usuario` |
-| Projetos | `/projeto` |
-| Artigos | `/artigo` |
-| Feedbacks | `/feedback` |
-
----
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Siga os passos:
-
-1. Faça um fork do projeto
-2. Crie uma branch: `git checkout -b feature/minha-feature`
-3. Commit suas mudanças: `git commit -m 'feat: adiciona minha feature'`
-4. Push: `git push origin feature/minha-feature`
-5. Abra um Pull Request
+Acesse a documentação interativa em `http://localhost:8080/swagger-ui.html`
 
 ---
 
@@ -443,7 +271,7 @@ Este projeto está sob a licença **MIT**. Consulte o arquivo [LICENSE](./LICENS
 
 <div align="center">
 
-Desenvolvido com ❤️ por **[Bruno Fraga](https://www.brunofragadev.com)**
+Desenvolvido por **[Bruno Fraga](https://www.brunofragadev.com)**
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-brunofragadev-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/brunofragadev)
 [![GitHub](https://img.shields.io/badge/GitHub-brunofdev-100000?style=flat-square&logo=github&logoColor=white)](https://github.com/brunofdev)
