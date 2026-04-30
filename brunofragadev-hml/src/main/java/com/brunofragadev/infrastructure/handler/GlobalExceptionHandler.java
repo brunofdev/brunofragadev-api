@@ -13,6 +13,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +44,10 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(status).body(body);
     }
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
 
     // Exceções de Conflito (Ex: Dados duplicados) - Status 409
     @ExceptionHandler({
@@ -67,7 +73,7 @@ public class GlobalExceptionHandler {
 
     // Exceções de Regra de Negócio/Validação - Status 400
     @ExceptionHandler({
-            InvalidCredentialsException.class,
+
             VerificationCodeInvalidException.class
     })
     public ResponseEntity<Map<String, Object>> handleBadRequestExceptions(RuntimeException ex) {
