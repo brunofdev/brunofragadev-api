@@ -5,6 +5,7 @@ import com.brunofragadev.module.article.domain.exception.ArticleBySlugNotFoundEx
 import com.brunofragadev.module.article.domain.exception.ArticleNotFoundException;
 import com.brunofragadev.infrastructure.log.domain.entity.ErrorLog;
 import com.brunofragadev.module.article.domain.exception.SlugAlreadyInUseException;
+import com.brunofragadev.module.project.domain.exception.ProjectNotFoundException;
 import com.brunofragadev.module.user.domain.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -65,7 +66,8 @@ public class GlobalExceptionHandler {
             UserNotFoundException.class,
             UserEmailNotRegisteredException.class,
             ArticleBySlugNotFoundException.class,
-            ArticleNotFoundException.class
+            ArticleNotFoundException.class,
+            ProjectNotFoundException.class
     })
     public ResponseEntity<Map<String, Object>> handleNotFoundExceptions(RuntimeException ex) {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
