@@ -1,0 +1,36 @@
+name: CI — Checks em Pull Requests
+
+on:
+  pull_request:
+    branches: ["**"]
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build & Testes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+          cache: maven
+
+      - name: Rodar testes
+        working-directory: ./brunofragadev-hml
+        run: mvn test --batch-mode
+
+      - name: Publicar relatório de testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: brunofragadev-hml/target/surefire-reports/
+          retention-days: 7

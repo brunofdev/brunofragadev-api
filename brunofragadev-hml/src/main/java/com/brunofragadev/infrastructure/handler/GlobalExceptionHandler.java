@@ -5,6 +5,7 @@ import com.brunofragadev.module.article.domain.exception.ArticleBySlugNotFoundEx
 import com.brunofragadev.module.article.domain.exception.ArticleNotFoundException;
 import com.brunofragadev.infrastructure.log.domain.entity.ErrorLog;
 import com.brunofragadev.module.article.domain.exception.SlugAlreadyInUseException;
+import com.brunofragadev.module.project.domain.exception.ProjectNotFoundException;
 import com.brunofragadev.module.user.domain.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -42,6 +43,10 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(status).body(body);
     }
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
 
     // Exceções de Conflito (Ex: Dados duplicados) - Status 409
     @ExceptionHandler({
@@ -59,7 +64,8 @@ public class GlobalExceptionHandler {
             UserNotFoundException.class,
             UserEmailNotRegisteredException.class,
             ArticleBySlugNotFoundException.class,
-            ArticleNotFoundException.class
+            ArticleNotFoundException.class,
+            ProjectNotFoundException.class
     })
     public ResponseEntity<Map<String, Object>> handleNotFoundExceptions(RuntimeException ex) {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
@@ -67,7 +73,6 @@ public class GlobalExceptionHandler {
 
     // Exceções de Regra de Negócio/Validação - Status 400
     @ExceptionHandler({
-            InvalidCredentialsException.class,
             VerificationCodeInvalidException.class
     })
     public ResponseEntity<Map<String, Object>> handleBadRequestExceptions(RuntimeException ex) {

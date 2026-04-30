@@ -27,7 +27,6 @@ public class DeleteFeedbackUseCase {
         if (!isCommentOwner && !isAdmin) {
             throw new InvalidCredentialsException("Acesso negado: Você não tem permissão para excluir este feedback.");
         }
-
         feedbackRepository.delete(feedback);
     }
 }

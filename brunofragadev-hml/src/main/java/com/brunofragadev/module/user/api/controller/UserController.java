@@ -94,7 +94,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserDTO>> getAuthenticatedUserData(
             @Parameter(hidden = true) @AuthenticationPrincipal User authenticatedUser) {
         UserDTO userDTO = getAuthenticatedUserUseCase.execute(authenticatedUser.getUsername());
-        return ResponseEntity.ok().body(ApiResponse.success("Dados do usario autenticado", userDTO));
+        return ResponseEntity.ok().body(ApiResponse.success("Dados do usuário autenticado", userDTO));
     }
 
     @PostMapping("/reenviar-codigo")
