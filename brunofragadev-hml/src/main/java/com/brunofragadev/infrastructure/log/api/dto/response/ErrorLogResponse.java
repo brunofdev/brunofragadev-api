@@ -8,6 +8,5 @@ public record ErrorLogResponse(
         String endpoint,
         String metodoHttp,
         String mensagemResumo,
-        String stackTraceCompleta,
         String usuarioLogado
 ) {}

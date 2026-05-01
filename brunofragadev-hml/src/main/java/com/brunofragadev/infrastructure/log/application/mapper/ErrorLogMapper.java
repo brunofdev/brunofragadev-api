@@ -15,7 +15,6 @@ public class ErrorLogMapper {
                 log.getEndpoint(),
                 log.getMetodoHttp(),
                 log.getMensagemResumo(),
-                log.getStackTraceCompleta(),
                 log.getUsuarioLogado()
         );
     }
