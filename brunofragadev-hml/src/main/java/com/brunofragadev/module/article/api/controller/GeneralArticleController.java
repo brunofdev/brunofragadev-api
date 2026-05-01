@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/geral/artigos")
 @Tag(name = "Artigos - Público", description = "Endpoints acessíveis para leitura e listagem de artigos publicados")

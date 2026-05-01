@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/usuario")
 @Validated
@@ -99,14 +100,14 @@ public class UserController {
 
     @PostMapping("/reenviar-codigo")
     @Operation(summary = "Reenviar código de ativação", description = "Gera e envia um novo código de 6 dígitos para o e-mail do usuário.")
-    public ResponseEntity<Void> resendCode(@RequestBody String userName) {
+    public ResponseEntity<Void> resendCode(@RequestBody @NotBlank @Size(max = 150) String userName) {
         generateVerificationCodeUseCase.execute(userName);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/senha/recuperacao")
     @Operation(summary = "Solicitar recuperação de senha", description = "Envia um e-mail com instruções e código para recuperar a senha esquecida.")
-    public ResponseEntity<ApiResponse<PasswordRecoveryResponse>> recoverPassword(@RequestBody String userNameOrEmail) {
+    public ResponseEntity<ApiResponse<PasswordRecoveryResponse>> recoverPassword(@RequestBody @NotBlank @Size(max = 150) String userNameOrEmail) {
         PasswordRecoveryResponse emailDTO = sendPasswordRecoveryEmailUseCase.execute(userNameOrEmail);
         return ResponseEntity.ok(ApiResponse.success("Email enviado com sucesso", emailDTO));
     }

@@ -1,5 +1,7 @@
 package com.brunofragadev.infrastructure.email;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,8 @@ import java.util.Map;
 
 @Component
 public class BrevoEmailProvider implements EmailProvider {
+
+    private static final Logger log = LoggerFactory.getLogger(BrevoEmailProvider.class);
 
     private final WebClient webClient;
 
@@ -41,6 +45,6 @@ public class BrevoEmailProvider implements EmailProvider {
                 .toBodilessEntity()
                 .block();
 
-        System.out.println("E-mail enviado via Brevo para: " + para);
+        log.info("E-mail enviado via Brevo para: {}", para);
     }
 }

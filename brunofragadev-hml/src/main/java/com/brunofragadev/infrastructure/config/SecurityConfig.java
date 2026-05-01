@@ -5,10 +5,13 @@ import com.brunofragadev.infrastructure.security.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,9 +33,11 @@ public class SecurityConfig {
     @Autowired
     SecurityFilter securityFilter;
 
+    @Autowired
+    Environment environment;
+
     //ROTAS PUBLICAS
     private static final String[] PUBLIC_ENDPOINTS = {
-            "/api/auth/cliente-login",
             "/auth/login",
             "/auth/login/google",
             "/v3/api-docs/**",
@@ -45,6 +50,7 @@ public class SecurityConfig {
             "/usuario/senha/recuperacao/validar-codigo",
             "/usuario/senha/recuperacao/alterar-senha",
             "/projetos/publicos",
+            "/projetos/publicos/**",
             "/feedback/geral/listar-todos",
             "/feedback/projetos/listar-todos/**",
             "/feedback/artigos/listar-todos/**",
@@ -52,10 +58,6 @@ public class SecurityConfig {
             "/geral/artigos/listar-todos-publicados",
             "/geral/artigos/listar-ultimos-publicados",
             "/geral/artigos/{slug}",
-            "/h2-console/**" //usado localmente apenas para testes
-
-
-            //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
     };
     //ROTAS PROTEGIDAS
     private static final Map<String, Role> PROTECTED_ROUTES = Map.ofEntries(
@@ -88,7 +90,6 @@ public class SecurityConfig {
             entry("/paineladm/projetos", Role.ADMIN3),
             entry("/paineladm/projetos/**", Role.ADMIN3),
             entry("/paineladm/artigos/**", Role.ADMIN3),
-            entry("/paineladm/atualizar/{id}", Role.ADMIN3),
             entry("/paineladm/logs/**", Role.ADMIN3)
     );
 
@@ -96,13 +97,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(PUBLIC_ENDPOINTS).permitAll();
+                    if (Arrays.asList(environment.getActiveProfiles()).contains("local")) {
+                        authorize.requestMatchers("/h2-console/**").permitAll();
+                    }
                     PROTECTED_ROUTES.forEach((url, role) -> {
                         authorize.requestMatchers(url).hasRole(role.name());
                     });
@@ -114,7 +118,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of(
+                "https://www.brunofragadev.com",
+                "http://localhost:5173",
+                "http://localhost:3000"
+        ));
         configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/projetos/publicos")
 @Tag(name = "Portfólio Público", description = "Endpoints abertos para exibição dos projetos no site (Não exige Token)")

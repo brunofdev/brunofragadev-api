@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/feedback/artigos") // 👈 Endereço específico para Artigos
 @SecurityRequirement(name = "bearerAuth")
