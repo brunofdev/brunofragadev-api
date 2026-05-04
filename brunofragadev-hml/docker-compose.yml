@@ -28,12 +28,16 @@ services:
       db:
         condition: service_healthy
     environment:
-      # Sobrescreve as configurações do application.properties
+      SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/webportifolio_db
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin_password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update # Cria as tabelas automaticamente
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      JWT_SECRET_KEY: chave-secreta-docker-local-para-testes-muito-longa-32chars
+      GOOGLE_CLIENT_ID: 343387992223-f8g2ocjl691sl46njle0ag9hgb93kf5g.apps.googleusercontent.com
+      BREVO_API_KEY: xkeysib-chave-invalida-para-docker-local
+      BREVO_SENDER_EMAIL: brunofragaa97@gmail.com
 
 volumes:
   postgres-data:
