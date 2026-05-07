@@ -3,6 +3,7 @@ package com.brunofragadev.infrastructure.config;
 import com.brunofragadev.module.user.domain.entity.Role;
 import com.brunofragadev.infrastructure.security.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -35,6 +36,9 @@ public class SecurityConfig {
 
     @Autowired
     Environment environment;
+
+    @Value("${SWAGGER_ENABLED:false}")
+    private boolean swaggerEnabled;
 
     //ROTAS PUBLICAS
     private static final String[] PUBLIC_ENDPOINTS = {
@@ -98,9 +102,16 @@ public class SecurityConfig {
         return httpSecurity
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                )
+                .headers(headers -> {
+                    if (swaggerEnabled) {
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+                               .contentSecurityPolicy(csp -> csp.policyDirectives(
+                                       "frame-ancestors 'self' https://brunofragadev.com http://localhost:5173 http://localhost:5174"
+                               ));
+                    } else {
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin);
+                    }
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(PUBLIC_ENDPOINTS).permitAll();
