@@ -106,7 +106,7 @@ public class SecurityConfig {
                     if (swaggerEnabled) {
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
                                .contentSecurityPolicy(csp -> csp.policyDirectives(
-                                       "frame-ancestors 'self' https://brunofragadev.com http://localhost:5173 http://localhost:5174"
+                                       "frame-ancestors 'self' https://brunofragadev.com https://www.brunofragadev.com http://localhost:5173 http://localhost:5174"
                                ));
                     } else {
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin);
