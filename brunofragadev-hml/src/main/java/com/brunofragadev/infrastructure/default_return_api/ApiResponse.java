@@ -1,11 +1,16 @@
 package com.brunofragadev.infrastructure.default_return_api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
     private boolean status;
+    @Getter
     private String message;
+    @Getter
     private T dados;
     private ApiError erro;
 
@@ -28,31 +33,5 @@ public class ApiResponse<T> {
     public boolean getStatus(){
         return status;
     }
-    public void setStatus(boolean status){
-        this.status = status;
-    }
 
-    public ApiError getErro() {
-        return erro;
-    }
-
-    public void setErro(ApiError erro) {
-        this.erro = erro;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getDados() {
-        return dados;
-    }
-
-    public void setDados(T dados) {
-        this.dados = dados;
-    }
 }
