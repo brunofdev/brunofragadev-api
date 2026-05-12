@@ -1,6 +1,7 @@
 package com.brunofragadev.infrastructure.config;
 
 import com.brunofragadev.module.user.domain.entity.Role;
+import com.brunofragadev.infrastructure.security.RateLimitFilter;
 import com.brunofragadev.infrastructure.security.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,9 @@ public class SecurityConfig {
 
     @Autowired
     SecurityFilter securityFilter;
+
+    @Autowired
+    RateLimitFilter rateLimitFilter;
 
     @Autowired
     Environment environment;
@@ -123,6 +127,7 @@ public class SecurityConfig {
                     });
                     authorize.anyRequest().hasRole("ADMIN3");
                 })
+                .addFilterBefore(rateLimitFilter, SecurityFilter.class)
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
